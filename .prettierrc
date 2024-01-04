@@ -1,14 +1,21 @@
 {
-    "trailingComma": "es5",
-    "tabWidth": 4,
-    "semi": false,
-    "singleQuote": true,
-    "overrides": [
-        {
-            "files": ["*.json", "*.mjs"],
-            "options": {
-                "tabWidth": 2
-            }
-        }
-    ]
+  "trailingComma": "es5",
+  "tabWidth": 4,
+  "semi": false,
+  "singleQuote": true,
+  "plugins": ["prettier-plugin-astro"],
+  "overrides": [
+    {
+      "files": ["*.json", "*.mjs", ".prettierrc", "*.yml"],
+      "options": {
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro"
+      }
+    }
+  ]
 }

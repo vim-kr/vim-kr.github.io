@@ -15,6 +15,14 @@
     "sharp": "^0.32.5"
   },
   "devDependencies": {
-    "prettier": "^3.1.1"
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-astro": "^0.31.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "prettier": "^3.1.1",
+    "prettier-plugin-astro": "^0.12.3",
+    "typescript": "^5.3.3"
   }
 }
