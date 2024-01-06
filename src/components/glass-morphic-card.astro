@@ -32,15 +32,15 @@ const borderColor = borderColors[colorVariant]
   w-full
   ${backgroundColor}
   ${borderColor} 
-  px-6
-  py-10
   rounded-2xl
-  bg-clip-padding 
-  backdrop-filter 
-  backdrop-blur-md 
-  bg-opacity-40
-  border-opacity-40
   border
+  border-opacity-40
+  bg-opacity-40 
+  bg-clip-padding 
+  px-6 
+  py-10
+  backdrop-blur-md
+  backdrop-filter
 `}
 >
     <h2 style="word-break: keep-all;">
@@ -49,7 +49,7 @@ const borderColor = borderColors[colorVariant]
     </h2>
     <div
         style="word-break: keep-all;"
-        class="text-2xl text-slate-800 leading-10"
+        class="text-2xl leading-10 text-slate-800"
     >
         <slot />
     </div>

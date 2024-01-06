@@ -3,11 +3,11 @@
 import GlassMorphicCard from 'components/glass-morphic-card.astro'
 ---
 
-<div class="py-10
-	px-10
-	grid
-	gap-x-10
+<div class="grid
 	grid-cols-1
+	gap-x-10
+	px-10
+	py-10
 	md:grid-cols-2">
     <div class="introduction">
         <GlassMorphicCard colorVariant="blue">
@@ -34,36 +34,36 @@ import GlassMorphicCard from 'components/glass-morphic-card.astro'
         </GlassMorphicCard>
         <div class="discord-invitation-button">
             <div
-                class="flex
-		justify-center
-		md:justify-start
+                class="mt-12
+		flex
 		items-center
-		mt-12
-		md:mt-8"
+		justify-center
+		md:mt-8
+		md:justify-start"
             >
                 <a
                     href="https://discord.gg/FCDhM2cw65"
                     class="flex
+		cursor-pointer
 		items-center
-		bg-white
+		rounded-lg
 		border
 		border-gray-300
-		rounded-lg
-		shadow-md
-		cursor-pointer
+		bg-white
 		px-6
 		py-4
 		text-sm
 		font-medium
 		text-gray-800
+		shadow-md
 		hover:bg-gray-200
 		focus:outline-none
 		focus:ring-2
-		focus:ring-offset-2
-		focus:ring-gray-500"
+		focus:ring-gray-500
+		focus:ring-offset-2"
                 >
                     <svg
-                        class="h-6 w-6 mr-2"
+                        class="mr-2 h-6 w-6"
                         xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink"
                         width="800px"
@@ -89,13 +89,13 @@ import GlassMorphicCard from 'components/glass-morphic-card.astro'
     </div>
     <div
         class="vim-logo
-		flex
-		justify-center
-		md:justify-end
 		align-start
 		order-first
+		mb-12
+		flex
+		justify-center
 		md:order-last
-		mb-12"
+		md:justify-end"
     >
         <img
             style="max-width: 15rem; max-height: 15rem; width: 100%; object-fit: contain;"
