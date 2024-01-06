@@ -1,0 +1,56 @@
+---
+interface Props {
+    colorVariant: 'gray' | 'green' | 'red' | 'blue' | 'yellow' | 'violet'
+}
+
+const { colorVariant = 'green' } = Astro.props
+
+const backgroundColors = {
+    gray: 'bg-gray-100',
+    green: 'bg-green-100',
+    red: 'bg-red-100',
+    blue: 'bg-blue-100',
+    yellow: 'bg-yellow-100',
+    violet: 'bg-violet-100',
+}
+
+const borderColors = {
+    gray: 'border-gray-300',
+    green: 'border-green-300',
+    red: 'border-red-300',
+    blue: 'border-blue-300',
+    yellow: 'border-yellow-300',
+    violet: 'border-violet-300',
+}
+
+const backgroundColor = backgroundColors[colorVariant]
+const borderColor = borderColors[colorVariant]
+---
+
+<div
+    className={`
+  w-full
+  ${backgroundColor}
+  ${borderColor} 
+  px-6
+  py-10
+  rounded-2xl
+  bg-clip-padding 
+  backdrop-filter 
+  backdrop-blur-md 
+  bg-opacity-40
+  border-opacity-40
+  border
+`}
+>
+    <h2 style="word-break: keep-all;">
+        <slot name="icon" />
+        <slot name="title" />
+    </h2>
+    <div
+        style="word-break: keep-all;"
+        class="text-2xl text-slate-800 leading-10"
+    >
+        <slot />
+    </div>
+</div>
