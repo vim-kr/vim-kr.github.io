@@ -3,13 +3,16 @@
 import GlassMorphicCard from 'components/glass-morphic-card.astro'
 ---
 
-<div class="grid
+<div
+    style="background-image: url('https://storage.googleapis.com/memedex-bucket/general-purpose/screenshot-neovim.png'); object-fit: cover;"
+    class="grid
 	grid-cols-1
 	gap-x-10
 	px-10
 	py-10
-	md:grid-cols-2">
-    <div class="introduction">
+	md:grid-cols-3"
+>
+    <div class="introduction col-span-1 md:col-span-2">
         <GlassMorphicCard colorVariant="blue">
             <Fragment slot="title">Vim에 대한 애정</Fragment>
             <p>Vim에 대한 애정이 넘쳐나는 사람들을 위한 따뜻한 커뮤니티</p>
@@ -82,7 +85,8 @@ import GlassMorphicCard from 'components/glass-morphic-card.astro'
                         </g>
                     </svg>
 
-                    <span>디스코드 서버에 참여하기</span>
+                    <span style="color: #5865F2;">디스코드 서버에 참여하기</span
+                    >
                 </a>
             </div>
         </div>
@@ -91,6 +95,7 @@ import GlassMorphicCard from 'components/glass-morphic-card.astro'
         class="vim-logo
 		align-start
 		order-first
+		col-span-1
 		mb-12
 		flex
 		justify-center
