@@ -2,3 +2,11 @@ main > .content-panel:first-of-type {
     /* 기본적으로 생기는 title 영역 제거 */
     display: none;
 }
+
+.sl-container {
+	max-width: 100% !important;
+}
+
+.content-panel {
+	padding: 0 !important;
+}
