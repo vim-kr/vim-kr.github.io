@@ -1,0 +1,20 @@
+---
+import vimPlugins from '../data/vim-plugins.json'
+---
+
+<section>
+    <h2>Use Case (Plugins)</h2>
+    <ul>
+        {
+            vimPlugins.map((useCase) => (
+                <li class="mb-[12px]">
+                    <div class="font-bold">{useCase.title}</div>
+                    <span class="mt-4">{useCase.description}</span>
+                    <div>
+                        <a href={useCase.link}>Learn More</a>
+                    </div>
+                </li>
+            ))
+        }
+    </ul>
+</section>
