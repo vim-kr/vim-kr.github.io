@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Lazy Nvim",
+    "description": "Lazy Nvim is a plugin that allows you to load plugins on demand. It is a great way to speed up your startup time.",
+    "link": ""
+  },
+  {
+    "title": "Language Server Protocol",
+    "description": "The Language Server protocol is used to integrate programming languages into editors and IDEs. It is used by VSCode, Vim, Emacs, and many more.",
+    "link": "https://microsoft.github.io/language-server-protocol/"
+  },
+  {
+    "title": "Nvim Treesitter",
+    "description": "Nvim Treesitter is a plugin that allows you to parse and query your code. It is used by many plugins to provide better syntax highlighting, indentation, and more.",
+    "link": "https://github.com/nvim-treesitter/nvim-treesitter"
+  },
+  {
+    "title": "Nvim Snippets",
+    "description": "Nvim Snippets is a plugin that allows you to create snippets for your code. It is used by many plugins to provide better syntax highlighting, indentation, and more.",
+    "link": "https://github.com/L3MON4D3/LuaSnip"
+  },
+  {
+    "title": "Vim Surround",
+    "description": "Vim Surround is a plugin that allows you to surround text with quotes, brackets, and more. It is used by many plugins to provide better syntax highlighting, indentation, and more.",
+    "link": "https://github.com/tpope/vim-surround"
+  }
+]

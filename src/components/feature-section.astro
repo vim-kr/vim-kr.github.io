@@ -1,0 +1,20 @@
+---
+import vimFeatures from '../data/vim-features.json'
+---
+
+<section>
+    <h2>Features</h2>
+    <ul>
+        {
+            vimFeatures.map((feature) => (
+                <li>
+                    <div class="font-bold">{feature.title}</div>
+                    <span class="mt-4">{feature.description}</span>
+                    <div>
+                        <a href={feature.link}>Learn More</a>
+                    </div>
+                </li>
+            ))
+        }
+    </ul>
+</section>
