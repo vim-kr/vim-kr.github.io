@@ -42,9 +42,20 @@ const borderColor = borderColors[colorVariant]
   py-10
   backdrop-blur-md
   backdrop-filter
+  shadow-md
+  shadow-black
 `}
 >
-    <h2 style="word-break: keep-all;" class="!text-slate-300">
+    <h2
+        style="
+		word-break: keep-all; 
+		-webkit-text-stroke: #9e9e9e; 
+		-webkit-text-stroke-width: 1px;
+		text-stroke: #9e9e9e; 
+		text-stroke-width: 1px; 
+		"
+        class="font-extrabold !leading-relaxed !text-white"
+    >
         <slot name="icon" />
         <slot name="title" />
     </h2>
