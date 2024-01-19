@@ -1,20 +1,40 @@
 ---
 import vimPlugins from '../data/vim-plugins.json'
+
+import Container from 'components/container.astro'
+
+import Marquee from 'components/glass-morphic-marquee/marquee-wrapper.astro'
+import MarqueeLogo from 'components/glass-morphic-marquee/marquee-logo.astro'
+import MarqueeCategoryLabel from 'components/glass-morphic-marquee/marquee-category-label.astro'
 ---
 
 <section>
-    <h2>Use Case (Plugins)</h2>
-    <ul>
-        {
-            vimPlugins.map((useCase) => (
-                <li class="mb-[12px]">
-                    <div class="font-bold">{useCase.title}</div>
-                    <span class="mt-4">{useCase.description}</span>
-                    <div>
-                        <a href={useCase.link}>Learn More</a>
-                    </div>
-                </li>
-            ))
-        }
-    </ul>
+    <div class="px-30">
+        <Marquee>
+            <MarqueeCategoryLabel>Web development</MarqueeCategoryLabel>
+            <MarqueeLogo src="/react-logo.png" />
+            <MarqueeLogo src="/astro-logo.png" />
+            <MarqueeLogo src="/svelte-logo.png" />
+            <div class="!mx-2 !mt-0">
+                <MarqueeLogo src="/django-logo.png" />
+            </div>
+            <MarqueeLogo src="/ruby-logo.png" />
+        </Marquee>
+    </div>
+    <Container>
+        <h2>Use Case (Plugins)</h2>
+        <ul>
+            {
+                vimPlugins.map((useCase) => (
+                    <li class="mb-[12px]">
+                        <div class="font-bold">{useCase.title}</div>
+                        <span class="mt-4">{useCase.description}</span>
+                        <div>
+                            <a href={useCase.link}>Learn More</a>
+                        </div>
+                    </li>
+                ))
+            }
+        </ul>
+    </Container>
 </section>
