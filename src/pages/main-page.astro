@@ -2,16 +2,22 @@
 import AboutSection from 'components/about-section.astro'
 import UsecaseSection from 'components/usecase-section.astro'
 import FeatureSection from 'components/feature-section.astro'
+
+import Container from 'components/container.astro'
 ---
 
 <div
     style="background-image: url('/blurry-background-large-1.svg'); object-fit: cover; background-repeat: repeat-y;"
-    class="flex flex-col gap-[100px] px-4 pb-10 pt-[100px] md:px-10"
+    class="flex flex-col gap-[100px] pb-10 pt-[100px]"
 >
     <!-- content 영역 -->
-    <AboutSection />
+    <Container>
+        <AboutSection />
+    </Container>
     <UsecaseSection />
-    <FeatureSection />
+    <Container>
+        <FeatureSection />
+    </Container>
 
     <!-- TODO: footer 영역 -->
 </div>
