@@ -1,0 +1,11 @@
+---
+import Container from './container.astro'
+
+import UsecaseSelection from './usecase-section/usecase-selection.jsx'
+import UsecaseExample from './usecase-section/usecase-example.jsx'
+---
+
+<Container>
+    <UsecaseSelection client:load />
+    <UsecaseExample client:load />
+</Container>

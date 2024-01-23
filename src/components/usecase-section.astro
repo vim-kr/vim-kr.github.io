@@ -1,11 +1,9 @@
 ---
-import vimPlugins from '../data/vim-plugins.json'
-
-import Container from 'components/container.astro'
-
 import Marquee from 'components/glass-morphic-marquee/marquee-wrapper.astro'
 import MarqueeLogo from 'components/glass-morphic-marquee/marquee-logo.astro'
 import MarqueeCategoryLabel from 'components/glass-morphic-marquee/marquee-category-label.astro'
+
+import Showcase from 'components/showcase.astro'
 ---
 
 <section>
@@ -21,20 +19,5 @@ import MarqueeCategoryLabel from 'components/glass-morphic-marquee/marquee-categ
             <MarqueeLogo src="/ruby-logo.png" />
         </Marquee>
     </div>
-    <Container>
-        <h2>Use Case (Plugins)</h2>
-        <ul>
-            {
-                vimPlugins.map((useCase) => (
-                    <li class="mb-[12px]">
-                        <div class="font-bold">{useCase.title}</div>
-                        <span class="mt-4">{useCase.description}</span>
-                        <div>
-                            <a href={useCase.link}>Learn More</a>
-                        </div>
-                    </li>
-                ))
-            }
-        </ul>
-    </Container>
+    <Showcase />
 </section>
