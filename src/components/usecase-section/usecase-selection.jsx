@@ -25,7 +25,7 @@ const UsecaseSelection = () => {
 
     return (
         <div>
-            <div className="block px-6 md:hidden">
+            <div className="block md:hidden">
                 <div className="flex gap-x-6">
                     {usecases.map((usecase, index) => (
                         <div
