@@ -4,9 +4,13 @@ main > .content-panel:first-of-type {
 }
 
 .sl-container {
-	max-width: 100% !important;
+    max-width: 100% !important;
 }
 
 .content-panel {
-	padding: 0 !important;
+    padding: 0 !important;
+}
+
+.dark-text-stroke {
+    -webkit-text-stroke: 1px #9e9e9e;
 }
