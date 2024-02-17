@@ -2,23 +2,32 @@ import { useStore } from '@nanostores/react'
 import { $usecase, selectUsecase } from 'stores/usecase-store'
 import UsecaseLabel from './usecase-label'
 import UsecaseRoundedLabel from './usecase-rounded-label'
-
-const usecases = ['vim-as-ide', 'note-taking', 'research', 'vim-as-tui']
+import UsecaseDescription from './usecase-description'
 
 const usecaseMetadata = {
+    ['getting-started']: {
+        headline: 'Getting started',
+        description: 'vim의 기본기능에 대해서 알아보자',
+        route: '/getting-started/how-to-vim',
+    },
     ['vim-as-ide']: {
         headline: 'Vim as IDE',
+        description: 'vim을 어떻게 하면 IDE처럼 사용하는 방법에 대해 알아보자',
+        route: '/vim-as-ide/kickstart',
     },
     ['note-taking']: {
         headline: 'Note taking',
-    },
-    ['research']: {
-        headline: 'Research',
+        description: 'vim을 어떻게 하면 노트 테이킹에 활용할 수 있을까',
+        route: '/note-taking/vimwiki',
     },
     ['vim-as-tui']: {
         headline: 'Vim as TUI',
+        description: 'vim을 어떻게 하면 TUI로 활용할 수 있을까',
+        route: '/',
     },
 }
+
+const usecases = Object.keys(usecaseMetadata)
 
 const UsecaseSelection = () => {
     const activeUsecase = useStore($usecase)
@@ -41,13 +50,28 @@ const UsecaseSelection = () => {
                     ))}
                 </div>
             </div>
-            {usecases.map((usecase) => (
-                <div onClick={() => selectUsecase(usecase)}>
-                    <UsecaseLabel isActive={usecase === activeUsecase}>
-                        {usecaseMetadata[usecase]['headline']}
-                    </UsecaseLabel>
-                </div>
-            ))}
+            {usecases.map((usecase) => {
+                const isActive = usecase === activeUsecase
+                return (
+                    <div
+                        onClick={() => {
+                            selectUsecase(usecase)
+                        }}
+                    >
+                        <UsecaseLabel isActive={isActive}>
+                            {usecaseMetadata[usecase]['headline']}
+                        </UsecaseLabel>
+                        {isActive && (
+                            <UsecaseDescription
+                                description={
+                                    usecaseMetadata[usecase]['description']
+                                }
+                                route={usecaseMetadata[usecase]['route']}
+                            />
+                        )}
+                    </div>
+                )
+            })}
         </div>
     )
 }

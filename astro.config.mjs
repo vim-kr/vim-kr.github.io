@@ -16,19 +16,21 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: 'Guides',
-          items: [
-            // Each item here is one entry in the navigation menu.
-            {
-              label: 'Example Guide',
-              link: '/guides/example/',
-            },
-          ],
+          label: 'Getting Started',
+          autogenerate: {
+            directory: 'getting-started',
+          },
         },
         {
-          label: 'Reference',
+          label: 'Vim As IDE',
           autogenerate: {
-            directory: 'reference',
+            directory: 'vim-as-ide',
+          },
+        },
+        {
+          label: 'Note Taking',
+          autogenerate: {
+            directory: 'note-taking',
           },
         },
       ],
