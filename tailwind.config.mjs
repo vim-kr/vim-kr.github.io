@@ -8,6 +8,9 @@ export default {
         light: "url('/blurry-background-light.svg')",
         dark: "url('/blurry-background-dark.svg')",
       }),
+      colors: {
+        'custom-gray': 'var(--sl-color-gray-2)',
+      },
     },
   },
   plugins: [],
