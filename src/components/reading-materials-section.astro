@@ -1,19 +1,24 @@
 ---
-import vimFeatures from '../data/vim-features.json'
+import readingMaterialsJSON from '../data/reading-materials.json'
 ---
 
 <!-- external link에 대한 모음 -->
 <section>
-    <h2 class="">Reading Materials</h2>
+    <h2 class="mb-[50px] border-b-black">
+        <i class="fa-solid fa-book-open"></i>
+        <span class="ml-[10px]">Reading Materials</span>
+    </h2>
     <ul>
         {
-            vimFeatures.map((feature) => (
-                <li>
-                    <div class="font-bold">{feature.title}</div>
-                    <span class="mt-4">{feature.description}</span>
-                    <div>
-                        <a href={feature.link}>Learn More</a>
-                    </div>
+            readingMaterialsJSON.map((feature) => (
+                <li class="mb-[30px]">
+                    <a href={feature.link} target="_blank">
+                        <h3 class="font-bold">{feature.title}</h3>
+                        <p class="!mt-[10px]">{feature.description}</p>
+                        <div class="!mt-0 text-sm">
+                            written by {feature.author}
+                        </div>
+                    </a>
                 </li>
             ))
         }
