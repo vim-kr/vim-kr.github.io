@@ -7,23 +7,27 @@ import UsecaseDescription from './usecase-description'
 const usecaseMetadata = {
     ['getting-started']: {
         headline: 'Getting started',
-        description: 'vim의 기본기능에 대해서 알아보자',
+        description: 'vim의 기본기능 보러가기',
         route: '/getting-started/how-to-vim',
+        icon: <i class="fa-solid fa-shoe-prints"></i>,
     },
     ['vim-as-ide']: {
         headline: 'Vim as IDE',
-        description: 'vim을 어떻게 하면 IDE처럼 사용하는 방법에 대해 알아보자',
+        description: 'vim을 환경을 IDE로 사용하기',
         route: '/vim-as-ide/kickstart',
+        icon: <i class="fa-solid fa-rocket"></i>,
     },
     ['note-taking']: {
         headline: 'Note taking',
-        description: 'vim을 어떻게 하면 노트 테이킹에 활용할 수 있을까',
+        description: 'vim을 노트 테이킹에 활용하기',
         route: '/note-taking/vimwiki',
+        icon: <i class="fa-regular fa-pen-to-square"></i>,
     },
-    ['vim-as-tui']: {
-        headline: 'Vim as TUI',
-        description: 'vim을 어떻게 하면 TUI로 활용할 수 있을까',
-        route: '/',
+    ['neovim-news']: {
+        headline: 'Neovim News',
+        description: 'Neovim 관련 업데이트 내용 보러가기',
+        route: '/neovim-news/inspect',
+        icon: <i class="fa-solid fa-newspaper"></i>,
     },
 }
 
@@ -36,7 +40,7 @@ const UsecaseSelection = () => {
         <div>
             <div className="block md:hidden">
                 <div className="flex gap-x-6">
-                    {usecases.map((usecase, index) => (
+                    {usecases.map((usecase) => (
                         <div
                             className="!m-0"
                             onClick={() => selectUsecase(usecase)}
@@ -44,7 +48,7 @@ const UsecaseSelection = () => {
                             <UsecaseRoundedLabel
                                 isActive={usecase === activeUsecase}
                             >
-                                {index + 1}
+                                {usecaseMetadata[usecase]['icon']}
                             </UsecaseRoundedLabel>
                         </div>
                     ))}
@@ -54,6 +58,7 @@ const UsecaseSelection = () => {
                 const isActive = usecase === activeUsecase
                 return (
                     <div
+                        className="!mt-0"
                         onClick={() => {
                             selectUsecase(usecase)
                         }}
