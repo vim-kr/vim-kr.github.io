@@ -33,6 +33,12 @@ export default defineConfig({
             directory: 'note-taking',
           },
         },
+        {
+          label: 'Neovim News',
+          autogenerate: {
+            directory: 'neovim-news',
+          },
+        },
       ],
     }),
     tailwind(),
