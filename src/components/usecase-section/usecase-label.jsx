@@ -1,7 +1,7 @@
 const UsecaseLabel = ({ isActive = false, children }) => {
     return (
         <div
-            className={`!m-0 cursor-pointer rounded-2xl py-10 text-4xl font-extrabold text-gray-600
+            className={`!m-0 cursor-pointer select-none rounded-2xl py-10 text-4xl font-extrabold text-gray-600
 			  ${
                   isActive
                       ? '!text-blue-500 dark:!text-white'
