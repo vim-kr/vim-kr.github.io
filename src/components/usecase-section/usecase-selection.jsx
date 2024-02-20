@@ -2,7 +2,6 @@ import { useStore } from '@nanostores/react'
 import { $usecase, selectUsecase } from 'stores/usecase-store'
 import UsecaseLabel from './usecase-label'
 import UsecaseRoundedLabel from './usecase-rounded-label'
-import UsecaseDescription from './usecase-description'
 
 const usecaseMetadata = {
     ['getting-started']: {
@@ -38,6 +37,7 @@ const UsecaseSelection = () => {
 
     return (
         <div>
+            {/* tab */}
             <div className="block md:hidden">
                 <div className="flex gap-x-6">
                     {usecases.map((usecase) => (
@@ -54,29 +54,32 @@ const UsecaseSelection = () => {
                     ))}
                 </div>
             </div>
-            {usecases.map((usecase) => {
-                const isActive = usecase === activeUsecase
-                return (
-                    <div
-                        className="!mt-0"
-                        onClick={() => {
-                            selectUsecase(usecase)
-                        }}
-                    >
-                        <UsecaseLabel isActive={isActive}>
-                            {usecaseMetadata[usecase]['headline']}
-                        </UsecaseLabel>
-                        {isActive && (
-                            <UsecaseDescription
-                                description={
-                                    usecaseMetadata[usecase]['description']
-                                }
-                                route={usecaseMetadata[usecase]['route']}
-                            />
-                        )}
-                    </div>
-                )
-            })}
+            {/* tab content */}
+            <div className="md:flex md:justify-between">
+                {usecases.map((usecase) => {
+                    const isActive = usecase === activeUsecase
+                    return (
+                        <a
+                            href={usecaseMetadata[usecase]['route']}
+                            onClick={() => selectUsecase(usecase)}
+                        >
+                            <div className="!mt-0">
+                                <UsecaseLabel isActive={isActive}>
+                                    {usecaseMetadata[usecase]['headline']}
+                                    <div className="ml-[4px] mt-[10px] text-sm">
+                                        {
+                                            usecaseMetadata[usecase][
+                                                'description'
+                                            ]
+                                        }
+                                        <i class="fa-solid fa-arrow-up-right-from-square ml-[4px]"></i>
+                                    </div>
+                                </UsecaseLabel>
+                            </div>
+                        </a>
+                    )
+                })}
+            </div>
         </div>
     )
 }
