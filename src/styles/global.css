@@ -16,3 +16,8 @@ main > .content-panel:first-of-type {
 .dark-text-stroke {
     -webkit-text-stroke: 1px #9e9e9e;
 }
+
+.main-container {
+    /* PC 환경에서 최대 1440px로 제한 */
+    width: min(100%, 1440px);
+}
