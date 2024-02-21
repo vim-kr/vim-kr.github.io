@@ -21,3 +21,15 @@ main > .content-panel:first-of-type {
     /* PC 환경에서 최대 1440px로 제한 */
     width: min(100%, 1440px);
 }
+
+div.page > header.header {
+	display: none;
+}
+
+body > a { 
+	display: none;
+}
+
+.main-frame {
+	padding-top: 0;
+}
