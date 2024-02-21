@@ -55,11 +55,11 @@ const UsecaseSelection = () => {
                 </div>
             </div>
             {/* tab content */}
-            <div className="md:flex md:justify-between">
+            <div className="flex flex-col md:!grid md:grid-cols-2 md:gap-x-16 md:gap-y-12">
                 {usecases.map((usecase) => {
                     const isActive = usecase === activeUsecase
                     return (
-                        <a
+						<a 
                             href={usecaseMetadata[usecase]['route']}
                             onClick={() => selectUsecase(usecase)}
                         >
