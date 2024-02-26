@@ -17,6 +17,15 @@ main > .content-panel:first-of-type {
     -webkit-text-stroke: 1px #9e9e9e;
 }
 
+main {
+	padding-bottom: 0vh;
+}
+
+div.page footer {
+	margin-top: 4rem;
+	display: none;
+}
+
 .main-container {
     /* PC 환경에서 최대 1440px로 제한 */
     width: min(100%, 1440px);
