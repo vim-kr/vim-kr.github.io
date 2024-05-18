@@ -9,6 +9,7 @@ export default defineConfig({
   site: 'https://next.vim.kr',
   integrations: [
     starlight({
+      favicon: '/favicon.ico',
       title: 'vim.kr',
       social: {
         discord: 'https://discord.com/widget?id=1071395189219938354&theme=dark',
