@@ -1,17 +1,5 @@
 [
   {
-    "title": "VimEnter 2023",
-    "description": "Vim 사용자 모임, VimEnter 두번째 행사",
-    "link": "https://au-vimenter.github.io/post/2023-12-23-au-vimenter/",
-    "author": "au-vimenter"
-  },
-  {
-    "title": "VimEnter 2022",
-    "description": "Vim 사용자 모임, VimEnter 첫번째 행사",
-    "link": "https://au-vimenter.github.io/post/2022-12-23-au-vimenter/",
-    "author": "au-vimenter"
-  },
-  {
     "title": "Vim, 두가지 관점",
     "description": "Vim에 대한 관점과 사용습관",
     "link": "https://johngrib.github.io/wiki/two-views-of-vim/",

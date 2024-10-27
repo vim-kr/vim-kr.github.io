@@ -1,6 +1,7 @@
 ---
 import AboutSection from 'components/about-section.astro'
 import UsecaseSection from 'components/usecase-section.astro'
+import VimEnterSection from 'components/vimenter-section.jsx'
 import ReadingMaterialsSection from 'components/reading-materials-section.astro'
 
 import Container from 'components/container.astro'
@@ -15,17 +16,23 @@ import Container from 'components/container.astro'
     </Container>
     <UsecaseSection />
     <Container>
+        <VimEnterSection />
+    </Container>
+    <Container>
         <ReadingMaterialsSection />
     </Container>
 
     <!-- TODO: footer 영역 -->
 </div>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y2Y08PZHV2"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y2Y08PZHV2"
+></script>
 <script is:inline>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  
-  gtag('config', 'G-Y2Y08PZHV2');
+    window.dataLayer = window.dataLayer || []
+    function gtag() {
+        dataLayer.push(arguments)
+    }
+    gtag('js', new Date())
+
+    gtag('config', 'G-Y2Y08PZHV2')
 </script>
