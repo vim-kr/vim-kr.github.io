@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import '@fortawesome/fontawesome-free/css/all.css';
 
 main > .content-panel:first-of-type {
@@ -18,12 +22,12 @@ main > .content-panel:first-of-type {
 }
 
 main {
-	padding-bottom: 0vh;
+    padding-bottom: 0vh;
 }
 
 div.page footer {
-	margin-top: 4rem;
-	display: none;
+    margin-top: 4rem;
+    display: none;
 }
 
 .main-container {
@@ -32,13 +36,13 @@ div.page footer {
 }
 
 div.page > header.header {
-	display: none;
+    display: none;
 }
 
-body > a { 
-	display: none;
+body > a {
+    display: none;
 }
 
 .main-frame {
-	padding-top: 0;
+    padding-top: 0;
 }

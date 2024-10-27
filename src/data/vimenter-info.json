@@ -1,0 +1,27 @@
+[
+  {
+    "title": "VimEnter 2023",
+    "description": "VimEnter 두번째 모임",
+    "link": "https://au-vimenter.github.io/post/2023-12-23-au-vimenter/",
+    "author": "au-vimenter",
+    "images": [
+      "https://au-vimenter.github.io/resource/A1/3C4C10-123F-43E1-A636-9474A66BA549/00.jpeg",
+      "https://au-vimenter.github.io/resource/A1/3C4C10-123F-43E1-A636-9474A66BA549/00-1.jpg",
+      "https://au-vimenter.github.io/resource/A1/3C4C10-123F-43E1-A636-9474A66BA549/02-cho-1.jpeg",
+      "https://au-vimenter.github.io/resource/A1/3C4C10-123F-43E1-A636-9474A66BA549/03-johngrib-1.jpeg",
+      "https://au-vimenter.github.io/resource/A1/3C4C10-123F-43E1-A636-9474A66BA549/04-lee.jpeg",
+      "https://au-vimenter.github.io/resource/A1/3C4C10-123F-43E1-A636-9474A66BA549/05-cha-1.jpeg",
+      "https://au-vimenter.github.io/resource/A1/3C4C10-123F-43E1-A636-9474A66BA549/06-kojima.jpeg"
+    ]
+  },
+  {
+    "title": "VimEnter 2022",
+    "description": "VimEnter 첫번째 모임",
+    "link": "https://au-vimenter.github.io/post/2022-12-23-au-vimenter/",
+    "author": "au-vimenter",
+    "images": [
+      "https://au-vimenter.github.io/resource/94/DF5E75-D0EF-43A9-ABCA-E169D4A67BFB/photo-on.jpeg",
+      "https://au-vimenter.github.io/resource/94/DF5E75-D0EF-43A9-ABCA-E169D4A67BFB/photo-online.jpeg"
+    ]
+  }
+]
