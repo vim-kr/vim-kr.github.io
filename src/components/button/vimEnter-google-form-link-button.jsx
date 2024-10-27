@@ -1,8 +1,8 @@
 const VimEnterGoogleFormLinkButton = () => {
     return (
-        <div class="discord-invitation-button">
+        <div className="discord-invitation-button">
             <div
-                class="mt-12
+                className="mt-12
 		flex
 		items-center
 		justify-center
@@ -11,7 +11,7 @@ const VimEnterGoogleFormLinkButton = () => {
             >
                 <a
                     href="https://forms.gle/GQrg7UJEQDrf9pxz6"
-                    class="flex
+                    className="flex
 		cursor-pointer
 		items-center
 		rounded-lg
