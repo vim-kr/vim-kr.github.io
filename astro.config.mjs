@@ -6,7 +6,7 @@ import react from '@astrojs/react'
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://next.vim.kr',
+  site: 'https://vim.kr',
   integrations: [
     starlight({
       favicon: '/favicon.ico',
