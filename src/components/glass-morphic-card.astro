@@ -6,21 +6,21 @@ interface Props {
 const { colorVariant = 'green' } = Astro.props
 
 const backgroundColors = {
-    gray: 'bg-gray-100',
-    green: 'bg-green-100',
-    red: 'bg-red-100',
-    blue: 'bg-blue-100',
-    yellow: 'bg-yellow-100',
-    violet: 'bg-violet-100',
+    gray: 'bg-gradient-to-br from-gray-600/30 to-gray-700/20',
+    green: 'bg-gradient-to-br from-vim-green/30 to-vim-green/10',
+    red: 'bg-gradient-to-br from-vim-pink/30 to-vim-pink/10',
+    blue: 'bg-gradient-to-br from-vim-blue/30 to-vim-blue/10',
+    yellow: 'bg-gradient-to-br from-vim-yellow/30 to-vim-yellow/10',
+    violet: 'bg-gradient-to-br from-vim-purple/30 to-vim-purple/10',
 }
 
 const borderColors = {
-    gray: 'border-gray-300',
-    green: 'border-green-300',
-    red: 'border-red-300',
-    blue: 'border-blue-300',
-    yellow: 'border-yellow-300',
-    violet: 'border-violet-300',
+    gray: 'border-gray-400/50',
+    green: 'border-vim-green/50',
+    red: 'border-vim-pink/50',
+    blue: 'border-vim-blue/50',
+    yellow: 'border-vim-yellow/50',
+    violet: 'border-vim-purple/50',
 }
 
 const backgroundColor = backgroundColors[colorVariant]
@@ -34,29 +34,52 @@ const borderColor = borderColors[colorVariant]
   ${backgroundColor}
   ${borderColor} 
   rounded-2xl
-  border-4
-  border-opacity-40
-  bg-opacity-30 
+  border-2
+  backdrop-blur-xl
   bg-clip-padding 
-  px-6 
-  py-10
-  backdrop-blur-md
-  backdrop-filter
-  shadow-md
-  shadow-black
+  px-8 
+  py-8
+  shadow-xl
+  hover:shadow-2xl
+  hover:scale-[1.02]
+  transition-all
+  duration-300
+  relative
+  overflow-hidden
+  group
+  before:absolute
+  before:inset-0
+  before:bg-gradient-to-r
+  before:from-transparent
+  before:via-white/10
+  before:to-transparent
+  before:-translate-x-full
+  before:group-hover:translate-x-full
+  before:transition-transform
+  before:duration-700
 `}
 >
-    <h2
-        style="word-break: keep-all;"
-        class="dark:dark-text-stroke font-extrabold !leading-relaxed dark:text-white"
-    >
-        <slot name="icon" />
-        <slot name="title" />
-    </h2>
     <div
-        style="word-break: keep-all;"
-        class="text-2xl leading-10 !text-slate-800 !dark:text-slate-400 "
+        class="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent opacity-50"
     >
-        <slot />
+    </div>
+    <div
+        class="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br from-white/20 to-transparent blur-3xl transition-transform duration-500 group-hover:scale-150"
+    >
+    </div>
+    <div class="relative z-10">
+        <h2
+            style="word-break: keep-all; color: white !important;"
+            class="mb-4 whitespace-normal text-2xl font-extrabold !leading-loose tracking-wide text-white md:text-3xl"
+        >
+            <slot name="icon" />
+            <slot name="title" />
+        </h2>
+        <div
+            style="word-break: keep-all; color: #e5e7eb !important;"
+            class="text-lg leading-relaxed tracking-normal !text-gray-200 md:text-xl"
+        >
+            <slot />
+        </div>
     </div>
 </div>

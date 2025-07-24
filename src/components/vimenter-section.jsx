@@ -1,82 +1,42 @@
 import React from 'react'
 import vimEnterJson from '../data/vimenter-info.json'
-import Marquee from './marquee/marquee-list'
+import VimEnterGallery from './vimenter-gallery'
+import VimEnterCard from './vimenter-card'
 
 const Banner = () => {
     return (
-        <div style={styles.container}>
-            <div style={styles.line}>
-                <span style={styles.pinkText}>지난</span>
-                <span style={styles.blueText}>VimEnter</span>
-                <span style={styles.star}>모임</span>
+        <div className="border-y border-vim-purple/30 bg-vim-dark-secondary/80 py-8 text-center backdrop-blur-sm">
+            <div className="flex items-center justify-center gap-3 text-3xl font-bold">
+                <span className="text-vim-pink">지난</span>
+                <span className="text-vim-blue">VimEnter</span>
+                <span className="text-white">모임</span>
             </div>
         </div>
     )
 }
 
-const styles = {
-    container: {
-        backgroundColor: '#2A2B5E',
-        padding: '20px',
-        textAlign: 'center',
-        fontFamily: "'Fira Code', monospace",
-    },
-    line: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '10px',
-        fontSize: '2rem',
-    },
-    pinkText: {
-        color: '#FF5C8D',
-    },
-    blueText: {
-        color: '#66AFFF',
-    },
-    whiteText: {
-        color: '#FFFFFF',
-    },
-    star: {
-        color: '#FFFFFF',
-        fontSize: '1.4rem',
-        position: 'relative',
-        top: '-5px',
-    },
-}
-
 const VimEnterSection = () => {
-    const eventImages = vimEnterJson.map((feature) => feature.images).flat()
+    const eventImages = vimEnterJson
+        .map((feature) => feature.images)
+        .flat()
+        .filter((img) => img)
     return (
         <section className="mb-32">
             <Banner />
-            <div
-                className="
-      flex
-      justify-center
-      "
-            >
-                <Marquee images={eventImages} />
+            <div className="my-12">
+                <h3
+                    className="mb-8 text-center text-2xl font-bold text-vim-blue"
+                    style={{ color: '#7aa2f7 !important' }}
+                >
+                    행사 사진 갤러리
+                </h3>
+                <VimEnterGallery images={eventImages} />
             </div>
-            <ul
-                className="
-  flex
-  flex-col
-  gap-4
-  "
-            >
-                {vimEnterJson.map((feature, index) => (
-                    <li key={index} className="list-inside list-disc">
-                        <a
-                            href={feature.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {feature.description} 보러가기 ({feature.title})
-                        </a>
-                    </li>
+            <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {vimEnterJson.map((event, index) => (
+                    <VimEnterCard key={index} event={event} />
                 ))}
-            </ul>
+            </div>
         </section>
     )
 }

@@ -1,8 +1,69 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 @import '@fortawesome/fontawesome-free/css/all.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Force dark theme */
+:root {
+    color-scheme: dark;
+    --sl-color-bg: #1a1b26 !important;
+    --sl-color-bg-nav: #24283b !important;
+    --sl-color-bg-sidebar: #1a1b26 !important;
+    --sl-color-text: #c0caf5 !important;
+}
+
+html {
+    background-color: #1a1b26 !important;
+    color: #c0caf5 !important;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif !important;
+}
+
+body {
+    background-color: #1a1b26 !important;
+    color: #c0caf5 !important;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif !important;
+    word-break: keep-all;
+}
+
+/* Ensure all text elements use light colors */
+body * {
+    color: inherit;
+}
+
+/* Override Starlight's page background */
+.page {
+    background-color: transparent !important;
+}
+
+/* Remove light theme styles */
+[data-theme="light"] {
+    background-color: #1a1b26 !important;
+    color: #c0caf5 !important;
+}
+
+[data-theme="light"] body {
+    background-color: #1a1b26 !important;
+}
+
+/* Ensure the main content area uses our gradient */
+main {
+    background-color: transparent !important;
+}
+
+/* Direct gradient background */
+.bg-space-to-ground {
+    background-image: linear-gradient(to bottom, #1a1b26 0%, #24283b 50%, #16161e 100%) !important;
+    background-attachment: fixed !important;
+}
+
+/* Override any Starlight backgrounds */
+.page,
+.main-frame,
+[data-has-sidebar] {
+    background-color: transparent !important;
+}
 
 main > .content-panel:first-of-type {
     /* 기본적으로 생기는 title 영역 제거 */
@@ -17,9 +78,6 @@ main > .content-panel:first-of-type {
     padding: 0 !important;
 }
 
-.dark-text-stroke {
-    -webkit-text-stroke: 1px #9e9e9e;
-}
 
 main {
     padding-bottom: 0vh;
@@ -45,4 +103,72 @@ body > a {
 
 .main-frame {
     padding-top: 0;
+}
+
+/* Polaroid Gallery Styles */
+.polaroid-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+}
+
+.polaroid-item {
+    background: #24283b;
+    border: 1px solid rgba(123, 162, 247, 0.3);
+    padding: 0.5rem 0.5rem 2.5rem 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    width: 180px;
+}
+
+.polaroid-item:hover {
+    transform: rotate(0deg) scale(1.1) !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 6px 6px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.polaroid-item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    display: block;
+}
+
+.polaroid-caption {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #c0caf5;
+    font-family: 'Courier New', monospace;
+}
+
+@media (min-width: 768px) {
+    .polaroid-gallery {
+        gap: 2.5rem;
+    }
+    
+    .polaroid-item {
+        width: 220px;
+        padding: 0.75rem 0.75rem 3rem 0.75rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .polaroid-gallery {
+        gap: 3rem;
+    }
+    
+    .polaroid-item {
+        width: 260px;
+        padding: 1rem 1rem 3.5rem 1rem;
+    }
 }
