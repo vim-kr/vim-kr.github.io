@@ -1,8 +1,8 @@
+@import '@fortawesome/fontawesome-free/css/all.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import '@fortawesome/fontawesome-free/css/all.css';
 
 main > .content-panel:first-of-type {
     /* 기본적으로 생기는 title 영역 제거 */
