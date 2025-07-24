@@ -16,15 +16,15 @@ const DiscordLinkButton = () => {
 		items-center
 		rounded-lg
 		border
-		border-gray-300
-		bg-white
+		border-gray-600
+		bg-gray-800
 		px-6
 		py-4
 		text-sm
 		font-medium
-		text-gray-800
+		text-gray-200
 		shadow-md
-		hover:bg-gray-200
+		hover:bg-gray-700
 		focus:outline-none
 		focus:ring-2
 		focus:ring-gray-500
@@ -49,9 +49,7 @@ const DiscordLinkButton = () => {
                         </g>
                     </svg>
 
-                    <span style={{ color: '#5865F2' }}>
-                        디스코드 서버에 참여하기
-                    </span>
+                    <span className="text-white">디스코드 서버에 참여하기</span>
                 </a>
             </div>
         </div>

@@ -2,24 +2,24 @@
 import AboutSection from 'components/about-section.astro'
 import UsecaseSection from 'components/usecase-section.astro'
 import VimEnterSection from 'components/vimenter-section.jsx'
-import ReadingMaterialsSection from 'components/reading-materials-section.astro'
+import DiscordCTASection from 'components/discord-cta-section.jsx'
 
 import Container from 'components/container.astro'
 ---
 
 <div
-    class="flex flex-col gap-[100px] bg-light bg-cover pb-10 pt-[100px] dark:bg-dark"
+    class="flex min-h-screen flex-col gap-[100px] bg-space-to-ground bg-cover pb-10 pt-[100px]"
 >
     <!-- content 영역 -->
     <Container>
         <AboutSection />
     </Container>
+    <Container>
+        <DiscordCTASection />
+    </Container>
     <UsecaseSection />
     <Container>
         <VimEnterSection />
-    </Container>
-    <Container>
-        <ReadingMaterialsSection />
     </Container>
 
     <!-- TODO: footer 영역 -->

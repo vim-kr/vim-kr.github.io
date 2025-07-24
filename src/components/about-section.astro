@@ -1,21 +1,24 @@
 ---
 /* eslint-disable */
 import GlassMorphicCard from 'components/glass-morphic-card.astro'
-import DiscordLinkButton from './button/discord-link-button.jsx'
 ---
 
 <div class="grid
 	grid-cols-1
-	gap-x-10
+	gap-x-16
 	md:grid-cols-3">
-    <div class="introduction col-span-1 md:col-span-2">
+    <div class="introduction col-span-1 flex flex-col gap-6 md:col-span-2">
         <GlassMorphicCard colorVariant="blue">
-            <Fragment slot="title">Vim에 대한 애정</Fragment>
+            <Fragment slot="title">
+                <i class="fas fa-heart mr-3 text-vim-pink"></i>
+                Vim에 대한 애정
+            </Fragment>
             <p>Vim에 대한 애정이 넘쳐나는 사람들을 위한 따뜻한 커뮤니티</p>
         </GlassMorphicCard>
 
         <GlassMorphicCard colorVariant="red">
             <Fragment slot="title">
+                <i class="fas fa-hands-helping mr-3 text-vim-cyan"></i>
                 언제든지 도움을 요청할 수 있는 커뮤니티
             </Fragment>
             <p>
@@ -25,13 +28,15 @@ import DiscordLinkButton from './button/discord-link-button.jsx'
         </GlassMorphicCard>
 
         <GlassMorphicCard colorVariant="yellow">
-            <Fragment slot="title">다양한 배경의 개발자가 모인 멜팅팟</Fragment>
+            <Fragment slot="title">
+                <i class="fas fa-users mr-3 text-vim-green"></i>
+                다양한 배경의 개발자가 모인 멜팅팟
+            </Fragment>
             <p>
                 vim.kr은 웹/모바일/SRE/이공계 연구원 등 Vim을 사용하는 다양한
                 배경을 가진 사람들이 모인 멜팅팟입니다.
             </p>
         </GlassMorphicCard>
-        <DiscordLinkButton />
     </div>
     <div
         class="vim-logo
@@ -40,12 +45,15 @@ import DiscordLinkButton from './button/discord-link-button.jsx'
 		col-span-1
 		mb-12
 		flex
+		items-center
 		justify-center
 		md:order-last
-		md:justify-end"
+		md:justify-center
+		lg:justify-end"
     >
         <img
-            style="max-width: 20rem; max-height: 20rem; width: 100%; object-fit: contain; filter: drop-shadow(3rem 2rem 1rem #222); margin-bottom: 5rem"
+            class="transition-all duration-500 hover:rotate-3 hover:scale-110"
+            style="max-width: 18rem; max-height: 18rem; width: 100%; object-fit: contain; filter: drop-shadow(2rem 1.5rem 1rem rgba(0,0,0,0.3)); margin-bottom: 3rem"
             src="/vimkr.png"
         />
     </div>
