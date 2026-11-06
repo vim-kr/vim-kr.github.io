@@ -1,0 +1,73 @@
+---
+import Base from './base.astro'
+import { events, type Lang } from '../../data/events'
+import { ui, langs } from '../../i18n/ui'
+
+interface Props {
+    lang: Lang
+}
+
+const { lang } = Astro.props
+const t = ui[lang]
+const home = langs.find((l) => l.code === lang)!.path
+
+const fmtDate = (d: string) =>
+    new Intl.DateTimeFormat(
+        lang === 'ko' ? 'ko-KR' : lang === 'ja' ? 'ja-JP' : 'en-US',
+        {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        }
+    ).format(new Date(d + 'T00:00:00'))
+
+const host = (url: string) =>
+    url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]
+---
+
+<Base
+    lang={lang}
+    path="events/"
+    title={`${t.list.title} — vim.kr`}
+    desc={t.list.lead}
+>
+    <main id="main">
+        <section class="sec list-page" data-section="events">
+            <p class="c-comment">" :ls</p>
+            <h1 class="sec-title">{t.list.title}</h1>
+            <p class="lead">{t.list.lead}</p>
+            <ol class="signup-list">
+                {
+                    events.map((e, i) => (
+                        <li>
+                            <span class="sl-n">{events.length - i}</span>
+                            <div class="sl-main">
+                                <p class="sl-name">{e.name}</p>
+                                <p class="sl-date">
+                                    {fmtDate(e.date)}
+                                    {e.venue && <span>, {e.venue[lang]}</span>}
+                                </p>
+                            </div>
+                            {e.signup ? (
+                                <a
+                                    class="sl-link"
+                                    href={e.signup}
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    {t.signup} ↗
+                                    <span class="sl-host">
+                                        {host(e.signup)}
+                                    </span>
+                                </a>
+                            ) : (
+                                <span class="sl-none">{t.list.empty}</span>
+                            )}
+                        </li>
+                    ))
+                }
+            </ol>
+            <p class="links back"><a href={home}>← {t.list.back}</a></p>
+        </section>
+    </main>
+</Base>

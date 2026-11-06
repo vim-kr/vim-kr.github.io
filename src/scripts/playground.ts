@@ -139,7 +139,6 @@ export function initPlayground() {
     let step = 0
     let vim = new MiniVim([''])
     let solved = new Set<number>()
-    let handledAt = 0
 
     // 화면 키보드 만들기
     for (const row of ROWS) {
@@ -293,27 +292,33 @@ export function initPlayground() {
     }
 
     // 실제 키보드 입력
+    // keydown 에서 처리한 키는 같은 키의 input 이벤트(한글 조합 글자)를 버린다. 안 그러면 두 번 처리된다.
+    let fromKeydown = false
     input.addEventListener('keydown', (e) => {
         if (e.metaKey || e.ctrlKey || e.altKey) return
         if (SPECIAL.has(e.key)) {
             e.preventDefault()
+            if (vim.mode === 'insert') {
+                fromKeydown = false
+                flush() // 조합 중이던 글자를 먼저 넣는다
+            }
             press(e.key)
-            handledAt = Date.now()
+            fromKeydown = true
             return
         }
+        fromKeydown = false
         if (vim.mode === 'insert') return // 입력 모드 글자는 input 이벤트로 받는다 (한글 조합 포함)
         const k = keyFromCode(e) ?? (e.key.length === 1 ? e.key : null)
         if (!k) return
         e.preventDefault()
         press(k)
-        handledAt = Date.now()
+        fromKeydown = true
     })
 
-    const flush = () => {
+    function flush() {
         const v = input.value
         input.value = ''
-        if (!v) return
-        if (vim.mode !== 'insert' && Date.now() - handledAt < 80) return
+        if (!v || fromKeydown) return
         for (const ch of v) {
             if (vim.mode === 'insert') press(ch === '\n' ? 'Enter' : ch)
             else press(JAMO[ch] ?? ch)

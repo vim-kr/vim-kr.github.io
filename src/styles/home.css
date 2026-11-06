@@ -1424,3 +1424,97 @@ button.code-chip {
         margin-top: 112px;
     }
 }
+
+/* ---------- 역대 신청 페이지 ---------- */
+.list-page {
+    max-width: 820px;
+    margin: 0 auto;
+    padding-top: 72px;
+    padding-bottom: 40px;
+}
+
+.list-page .c-comment {
+    margin: 0 0 8px;
+    font-size: 14px;
+}
+
+.signup-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--fg);
+}
+
+.signup-list li {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 4px;
+    border-bottom: 1px solid var(--visual);
+}
+
+.sl-n {
+    flex: none;
+    width: 2ch;
+    text-align: right;
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--linenr);
+}
+
+.sl-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.sl-name {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.sl-date {
+    margin: 2px 0 0;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.sl-link {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.sl-host {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+}
+
+.sl-none {
+    flex: none;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.back {
+    margin-top: 32px;
+}
+
+@media (max-width: 640px) {
+    .signup-list li {
+        flex-wrap: wrap;
+        gap: 6px 14px;
+    }
+
+    .sl-link,
+    .sl-none {
+        margin-left: calc(2ch + 14px);
+        align-items: flex-start;
+    }
+}

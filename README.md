@@ -4,9 +4,6 @@ Welcome to Neovim Korea Community
 
 ## What we use
 
-- Template
-  - [starlight](https://starlight.astro.build/)
-
 - Core Library
   - astro 
   - react

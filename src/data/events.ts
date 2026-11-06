@@ -19,6 +19,7 @@ export interface VimEvent {
     date: string
     venue?: L10n
     summary: L10n
+    signup?: string // 신청 페이지. 플랫폼은 행사마다 다를 수 있다
     links: { label: L10n; href: string }[]
     video?: string
     talks: Talk[]
@@ -41,6 +42,7 @@ export const events: VimEvent[] = [
         id: 'jj-workshop-2026',
         name: 'Jujutsu Workshop',
         date: '2026-10-31',
+        signup: 'https://event-us.kr/vimkr/event/136098',
         venue: {
             ko: '튜링의사과, 서울 성동구',
             en: 'Turing’s Apple, Seoul',
@@ -52,14 +54,6 @@ export const events: VimEvent[] = [
             ja: 'Git ユーザー向けの Jujutsu（jj）実習ワークショップ。Tangled 開発者の boltless さんが担当。',
         },
         links: [
-            {
-                label: {
-                    ko: '행사 페이지',
-                    en: 'Event page',
-                    ja: 'イベントページ',
-                },
-                href: 'https://event-us.kr/vimkr/event/136098',
-            },
             {
                 label: {
                     ko: 'YouTube에서 보기',
@@ -83,20 +77,13 @@ export const events: VimEvent[] = [
         id: 'vimrc-2025',
         name: 'VIMRC 2025',
         date: '2025-11-30',
+        signup: 'https://event-us.kr/vimkr/event/116293',
         summary: {
             ko: '한 해 동안 다듬은 설정을 나눈 연말 모임.',
             en: 'A year-end meetup about the configs we polished.',
             ja: '一年かけて磨いた設定を語る年末の集まり。',
         },
         links: [
-            {
-                label: {
-                    ko: '신청 페이지',
-                    en: 'Event page',
-                    ja: 'イベントページ',
-                },
-                href: 'https://event-us.kr/vimkr/event/116293',
-            },
             {
                 label: { ko: '발표 자료', en: 'Slides', ja: '発表資料' },
                 href: 'https://drive.google.com/drive/folders/1aMdH36D0PK8kvXN2zyV1S5uknb0rLIXf',
@@ -115,21 +102,13 @@ export const events: VimEvent[] = [
         id: 'sprint-2025',
         name: 'vim-kr Sprint #1',
         date: '2025-01-12',
+        signup: 'https://event-us.kr/vimkr/event/97163',
         summary: {
             ko: '각자 배운 걸 나누는 첫 스프린트 모임.',
             en: 'Our first sprint meetup to share what we learn.',
             ja: '学んだことを共有する最初のスプリント会。',
         },
-        links: [
-            {
-                label: {
-                    ko: '신청 페이지',
-                    en: 'Event page',
-                    ja: 'イベントページ',
-                },
-                href: 'https://event-us.kr/vimkr/event/97163',
-            },
-        ],
+        links: [],
         talks: [],
         photos: [],
     },
@@ -137,20 +116,13 @@ export const events: VimEvent[] = [
         id: 'vimenter-2024',
         name: 'VimEnter 2024',
         date: '2024-12-21',
+        signup: 'https://event-us.kr/vim/event/95199',
         summary: {
             ko: '세 번째 VimEnter 모임.',
             en: 'Our third VimEnter.',
             ja: '3回目の VimEnter。',
         },
         links: [
-            {
-                label: {
-                    ko: '신청 페이지',
-                    en: 'Event page',
-                    ja: 'イベントページ',
-                },
-                href: 'https://event-us.kr/vim/event/95199',
-            },
             {
                 label: { ko: '행사 후기', en: 'Recap', ja: 'レポート' },
                 href: 'https://au-vimenter.github.io/post/2024-12-21-au-vimenter/',
@@ -208,20 +180,13 @@ export const events: VimEvent[] = [
         id: 'vimenter-2023',
         name: 'VimEnter 2023',
         date: '2023-12-23',
+        signup: 'https://event-us.kr/vim/event/74978',
         summary: {
             ko: '두 번째 VimEnter 모임.',
             en: 'Our second VimEnter.',
             ja: '2回目の VimEnter。',
         },
         links: [
-            {
-                label: {
-                    ko: '신청 페이지',
-                    en: 'Event page',
-                    ja: 'イベントページ',
-                },
-                href: 'https://event-us.kr/vim/event/74978',
-            },
             {
                 label: { ko: '행사 후기', en: 'Recap', ja: 'レポート' },
                 href: 'https://au-vimenter.github.io/post/2023-12-23-au-vimenter/',
@@ -275,20 +240,13 @@ export const events: VimEvent[] = [
         id: 'vimenter-2022',
         name: 'VimEnter 2022',
         date: '2022-12-23',
+        signup: 'https://event-us.kr/vim/event/51490',
         summary: {
             ko: '첫 번째 VimEnter 모임.',
             en: 'The very first VimEnter.',
             ja: '最初の VimEnter。',
         },
         links: [
-            {
-                label: {
-                    ko: '신청 페이지',
-                    en: 'Event page',
-                    ja: 'イベントページ',
-                },
-                href: 'https://event-us.kr/vim/event/51490',
-            },
             {
                 label: { ko: '행사 후기', en: 'Recap', ja: 'レポート' },
                 href: 'https://au-vimenter.github.io/post/2022-12-23-au-vimenter/',
