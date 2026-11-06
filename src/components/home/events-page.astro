@@ -37,37 +37,35 @@ const host = (url: string) =>
             <h1 class="sec-title">{t.list.title}</h1>
             <p class="lead">{t.list.lead}</p>
             <ol class="signup-list">
-                {
-                    events.map((e, i) => (
-                        <li>
-                            <span class="sl-n">{events.length - i}</span>
-                            <div class="sl-main">
-                                <p class="sl-name">{e.name}</p>
-                                <p class="sl-date">
-                                    {fmtDate(e.date)}
-                                    {e.venue && <span>, {e.venue[lang]}</span>}
-                                </p>
-                            </div>
-                            {e.signup ? (
-                                <a
-                                    class="sl-link"
-                                    href={e.signup}
-                                    target="_blank"
-                                    rel="noopener"
-                                >
-                                    {t.signup} ↗
-                                    <span class="sl-host">
-                                        {host(e.signup)}
-                                    </span>
-                                </a>
-                            ) : (
-                                <span class="sl-none">{t.list.empty}</span>
-                            )}
-                        </li>
-                    ))
-                }
+                {events.map((e, i) => (
+                    <li>
+                        <span class="sl-n">{events.length - i}</span>
+                        <div class="sl-main">
+                            <p class="sl-name">{e.name}</p>
+                            <p class="sl-date">
+                                {fmtDate(e.date)}
+                                {e.venue && <span>, {e.venue[lang]}</span>}
+                            </p>
+                        </div>
+                        {e.signup ? (
+                            <a
+                                class="sl-link"
+                                href={e.signup}
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                {t.signup} ↗
+                                <span class="sl-host">{host(e.signup)}</span>
+                            </a>
+                        ) : (
+                            <span class="sl-none">{t.list.empty}</span>
+                        )}
+                    </li>
+                ))}
             </ol>
-            <p class="links back"><a href={home}>← {t.list.back}</a></p>
+            <p class="links back">
+                <a href={home}>← {t.list.back}</a>
+            </p>
         </section>
     </main>
 </Base>
