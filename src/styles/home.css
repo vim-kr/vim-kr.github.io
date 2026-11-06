@@ -2,7 +2,7 @@
 :root {
     --bg: #ffffff;
     --fg: #000000;
-    --muted: #4a4a4a;
+    --muted: #333333;
     --visual: #d3d3d3; /* Visual, TabLine */
     --faint: #f2f2f2;
     --comment: #0000ff; /* Comment */
@@ -30,7 +30,7 @@ body {
     color: var(--fg);
     font-family: var(--sans);
     font-size: 17px;
-    line-height: 1.65;
+    line-height: 1.75;
     word-break: keep-all;
     overflow-wrap: anywhere;
     padding-bottom: var(--bar-h);
@@ -154,15 +154,15 @@ mark {
     box-shadow: none;
 }
 
-/* ---------- 탭라인 ---------- */
+/* ---------- 탭라인: TabLine 회색, TabLineSel 흰색, TabLineFill 반전(검정) ---------- */
 .tabline {
     position: sticky;
     top: 0;
     z-index: 30;
     display: flex;
     align-items: stretch;
-    height: 46px;
-    background: var(--visual);
+    height: 44px;
+    background: var(--fg);
     font-family: var(--mono);
     font-size: 14px;
 }
@@ -171,16 +171,21 @@ mark {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 0 16px;
+    padding: 0 16px 0 12px;
     font-weight: 800;
     color: var(--fg);
     background: var(--bg);
     text-decoration: none;
+    border-right: 1px solid var(--fg);
+}
+
+.brand img {
+    object-fit: contain;
 }
 
 .tabs {
     display: flex;
-    flex: 1;
+    gap: 1px;
     min-width: 0;
     overflow-x: auto;
     scrollbar-width: none;
@@ -193,14 +198,22 @@ mark {
 .tab {
     display: flex;
     align-items: center;
+    gap: 6px;
     padding: 0 16px;
     color: var(--fg);
+    background: var(--visual);
     text-decoration: underline;
+    text-underline-offset: 4px;
     white-space: nowrap;
 }
 
+.tab-n {
+    font-weight: 800;
+    color: var(--linenr);
+}
+
 .tab:hover {
-    background: #c4c4c4;
+    background: #e6e6e6;
 }
 
 .tab.active {
@@ -211,24 +224,51 @@ mark {
 
 .tab-right {
     display: flex;
+    flex: none;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
+    margin-left: auto;
     padding: 0 12px;
+    color: var(--bg);
 }
 
 .langs {
     display: flex;
+    align-items: center;
+    gap: 2px;
 }
 
 .langs a {
+    white-space: nowrap;
     padding: 2px 7px;
-    color: var(--fg);
+    color: var(--visual);
+    text-decoration: none;
+}
+
+.langs a:hover {
+    color: var(--bg);
+    text-decoration: underline;
 }
 
 .langs a[aria-current='true'] {
     font-weight: 800;
+    color: var(--fg);
     background: var(--bg);
+}
+
+.btn-tab {
+    padding: 4px 12px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--fg);
+    background: var(--search);
+    border-radius: 3px;
     text-decoration: none;
+}
+
+.btn-tab:hover {
+    background: var(--bg);
 }
 
 /* ---------- 레이아웃 ---------- */
@@ -432,108 +472,83 @@ h1 .ln-row::before {
 
 /* ---------- 연습 화면 ---------- */
 .pg {
-    margin-top: 40px;
+    max-width: 820px;
+    margin: 72px auto 0;
 }
 
-.pg-grid {
-    display: grid;
-    grid-template-columns: minmax(250px, 340px) minmax(0, 1fr);
-}
-
-.pg-side {
+.pg-head {
     display: flex;
-    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
     gap: 16px;
-    padding: 24px;
-    border-right: 1px solid var(--fg);
+    margin-bottom: 16px;
+    min-height: 92px;
 }
 
-.pg-label {
-    margin: 0;
-    font-size: 14px;
+.pg-title {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 800;
 }
 
-.pg-steps {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    counter-reset: step;
-}
-
-.pg-steps li {
-    counter-increment: step;
-}
-
-.pg-steps button {
-    width: 100%;
-    padding: 6px 4px;
+.pg-count {
+    margin-right: 10px;
     font-family: var(--mono);
-    font-size: 12px;
-    color: var(--fg);
-    background: var(--faint);
-    border: 1px solid transparent;
-    border-radius: 3px;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.pg-steps button::before {
-    content: counter(step) ' ';
+    font-size: 15px;
+    font-weight: 700;
     color: var(--linenr);
-    font-weight: 700;
 }
 
-.pg-steps .now button {
-    border-color: var(--fg);
-    background: var(--bg);
-    font-weight: 700;
-}
-
-.pg-steps .done button {
-    background: #dff0e6;
-}
-
-.pg-steps .done button::before {
-    content: '✓ ';
-    color: var(--type);
-}
-
-.pg-lesson h2 {
-    margin: 0 0 10px;
-    font-size: 24px;
-    line-height: 1.3;
-}
-
-.pg-lesson p {
+.pg-body {
     margin: 0;
-    font-size: 17px;
-    line-height: 1.9;
+    font-size: 18px;
+}
+
+.pg-body kbd.tap {
+    cursor: pointer;
 }
 
 .pg-success {
-    margin-top: 14px !important;
-    padding: 6px 10px;
+    margin: 6px 0 0;
     font-weight: 700;
     color: var(--type);
-    background: #dff0e6;
-    border-radius: 3px;
 }
 
-.pg-done h2 {
-    font-size: 30px;
+.pg-dots {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    margin: 8px 0 0;
+    padding: 0;
+    flex: none;
+}
+
+.pg-dots button {
+    display: block;
+    width: 12px;
+    height: 12px;
+    padding: 0;
+    border: 1px solid var(--fg);
+    border-radius: 50%;
+    background: var(--bg);
+    cursor: pointer;
+}
+
+.pg-dots .done button {
+    background: var(--type);
+    border-color: var(--type);
+}
+
+.pg-dots .now button {
+    outline: 2px solid var(--fg);
+    outline-offset: 2px;
 }
 
 .code-chip {
     display: inline-flex;
     gap: 12px;
     align-items: center;
-    margin-top: 12px;
-    padding: 6px 12px;
+    padding: 4px 10px;
     font-family: var(--mono);
     font-size: 15px;
     color: var(--bg);
@@ -543,6 +558,7 @@ h1 .ln-row::before {
 }
 
 button.code-chip {
+    margin-top: 12px;
     cursor: pointer;
 }
 
@@ -551,28 +567,14 @@ button.code-chip {
     color: var(--visual);
 }
 
-.pg-nav {
-    display: flex;
-    gap: 8px;
-    margin-top: auto;
-}
-
-.pg-nav [data-act='next'] {
-    margin-left: auto;
-}
-
 .pg-editor {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
     cursor: text;
 }
 
 .pg-buf {
-    flex: 1;
-    min-height: 260px;
-    padding: 12px 0;
+    min-height: 230px;
+    padding: 14px 0;
     font-family: var(--mono);
     font-size: 19px;
     line-height: 1.6;
@@ -587,7 +589,7 @@ button.code-chip {
 .pg-line .ln {
     flex: none;
     width: 44px;
-    padding-right: 12px;
+    padding-right: 14px;
     text-align: right;
     color: var(--linenr);
     user-select: none;
@@ -604,12 +606,7 @@ button.code-chip {
     font-weight: 800;
 }
 
-.pg .cur {
-    background: var(--fg);
-    color: var(--bg);
-}
-
-.pg:not(.focused) .cur {
+.pg:not(.focused) .pg-buf .cur {
     background: var(--visual);
     color: var(--fg);
 }
@@ -629,82 +626,103 @@ button.code-chip {
 
 .pg-start {
     position: absolute;
-    inset: 0 0 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
+    top: 12px;
+    right: 12px;
+    padding: 6px 12px;
     font-family: var(--mono);
-    background: rgb(255 255 255 / 0.55);
-    border: 0;
-    cursor: pointer;
-}
-
-.pg-start-main {
-    padding: 12px 22px;
-    font-size: 18px;
-    font-weight: 800;
+    font-size: 13px;
+    font-weight: 700;
     color: var(--bg);
     background: var(--fg);
-    border-radius: 4px;
-    box-shadow: 0 3px 0 #555;
-}
-
-.pg-start-sub {
-    font-size: 13px;
-    color: var(--muted);
+    border: 0;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
 .pg.started .pg-start {
     display: none;
 }
 
-.pg-keys {
+/* 화면 키보드 */
+.kb {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 14px 16px;
-    border-top: 1px solid var(--fg);
+    flex-direction: column;
+    gap: 6px;
+    width: min(100%, 600px);
+    margin: 28px auto 0;
+    padding: 12px;
     background: var(--faint);
+    border-radius: 10px;
+    user-select: none;
 }
 
-.pg-pad {
+.kb-row {
     display: flex;
-    flex-wrap: wrap;
     gap: 6px;
 }
 
-.pg-pad button {
-    min-width: 40px;
-    height: 40px;
-    padding: 0 8px;
+.kb-key {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 38px;
+    padding: 0;
     font-family: var(--mono);
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 13px;
     color: var(--fg);
     background: var(--bg);
-    border: 1px solid var(--fg);
-    border-radius: 5px;
+    border: 1px solid #bdbdbd;
+    border-radius: 6px;
+    box-shadow: 0 3px 0 #bdbdbd;
+    cursor: pointer;
+    transition: transform 0.06s, box-shadow 0.06s, background 0.06s;
+}
+
+.kb-key.hint {
+    background: var(--search);
+    border-color: var(--fg);
     box-shadow: 0 3px 0 var(--fg);
+    font-weight: 800;
+}
+
+.kb-key:active,
+.kb-key.down {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 transparent;
+    background: var(--visual);
+}
+
+.pg-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.pg-nav button {
+    padding: 6px 4px;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--muted);
+    background: none;
+    border: 0;
     cursor: pointer;
 }
 
-.pg-pad button:active,
-.pg-pad button.hit {
-    transform: translateY(2px);
-    box-shadow: 0 1px 0 var(--fg);
+.pg-nav button:hover {
+    color: var(--fg);
+    text-decoration: underline;
 }
 
-.pg-echo {
-    font-family: var(--mono);
-    font-size: 14px;
+.pg-nav button.ready {
+    padding: 6px 14px;
+    color: var(--bg);
+    background: var(--fg);
+    border-radius: 3px;
+    text-decoration: none;
 }
 
-.pg-echo [data-echo] {
-    font-weight: 700;
+.pg-nav button:disabled {
+    visibility: hidden;
 }
 
 /* ---------- 최근 행사 ---------- */
@@ -857,11 +875,12 @@ button.code-chip {
 
 .ev-summary {
     max-width: 62ch;
-    margin: 0 0 12px;
+    margin: 0 0 8px;
+    font-size: 18px;
 }
 
 .ev-body .links {
-    margin-bottom: 24px;
+    margin-bottom: 28px;
 }
 
 .talk-grid {
@@ -927,14 +946,20 @@ button.code-chip {
     color: var(--muted);
 }
 
-.talk-list {
+.talk-tags {
+    list-style: none;
     margin: 0;
-    padding-left: 1.4em;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
-.talk-list li::marker {
-    font-family: var(--mono);
-    color: var(--linenr);
+.talk-tags li {
+    padding: 4px 10px;
+    font-size: 15px;
+    background: var(--faint);
+    border-radius: 3px;
 }
 
 /* ---------- 사진 ---------- */
@@ -1231,6 +1256,17 @@ button.code-chip {
     cursor: pointer;
 }
 
+.lb-btn {
+    transition: transform 0.07s, box-shadow 0.07s, background 0.07s;
+}
+
+.lb-btn:active,
+.lb-btn.down {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 transparent;
+    background: var(--visual);
+}
+
 .lb-prev {
     left: 16px;
     top: 50%;
@@ -1248,18 +1284,8 @@ button.code-chip {
 
 /* ---------- 반응형 ---------- */
 @media (max-width: 900px) {
-    .pg-grid,
     .latest {
         grid-template-columns: 1fr;
-    }
-
-    .pg-side {
-        border-right: 0;
-        border-bottom: 1px solid var(--fg);
-    }
-
-    .pg-nav {
-        margin-top: 4px;
     }
 
     .steps {
@@ -1291,37 +1317,61 @@ button.code-chip {
         font-size: 17px;
     }
 
-    .tab,
-    .brand {
-        padding: 0 10px;
+    .tabline {
+        height: 40px;
+        font-size: 13px;
     }
 
-    .tab-right .btn,
+    .brand {
+        padding: 0 8px;
+    }
+
+    .brand-name,
+    .tab-n,
+    .btn-tab,
     .sl-keys {
         display: none;
     }
 
-    .pg-side {
-        padding: 18px 16px;
+    .tab {
+        padding: 0 10px;
+    }
+
+    .tab-right {
+        padding: 0 6px;
+    }
+
+    .langs a {
+        padding: 2px 4px;
     }
 
     .pg-buf {
-        font-size: 16px;
-        min-height: 200px;
+        font-size: 15px;
+        min-height: 190px;
+    }
+
+    .pg-head {
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+
+    .kb {
+        padding: 8px;
+        gap: 5px;
+    }
+
+    .kb-row {
+        gap: 4px;
+    }
+
+    .kb-key {
+        height: 34px;
+        font-size: 11px;
     }
 
     .pg-line .ln {
         width: 32px;
         padding-right: 8px;
-    }
-
-    .pg-steps {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .pg-pad button {
-        min-width: 36px;
-        height: 38px;
     }
 
     .ev-toggle {

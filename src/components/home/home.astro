@@ -95,13 +95,14 @@ const pageData = JSON.stringify({
         <nav class="tabline" aria-label="Menu">
             <a class="brand" href={current.path}>
                 <img src="/vimkr.png" alt="" width="22" height="22" />
-                vim.kr
+                <span class="brand-name">vim.kr</span>
             </a>
             <div class="tabs">
                 {
                     (['start', 'events', 'gallery', 'join'] as const).map(
-                        (k) => (
+                        (k, i) => (
                             <a class="tab" href={`#${k}`} data-tab={k}>
+                                <span class="tab-n">{i + 1}</span>
                                 {t.nav[k]}
                             </a>
                         )
@@ -125,11 +126,8 @@ const pageData = JSON.stringify({
                         ))
                     }
                 </div>
-                <a
-                    class="btn btn-rev btn-sm"
-                    href={DISCORD}
-                    target="_blank"
-                    rel="noopener">{t.discord}</a
+                <a class="btn-tab" href={DISCORD} target="_blank" rel="noopener"
+                    >{t.discord}</a
                 >
             </div>
         </nav>
@@ -175,130 +173,69 @@ const pageData = JSON.stringify({
             </section>
 
             <!-- 연습 화면 -->
-            <section class="win pg" id="try" data-section="top">
-                <div class="pg-grid">
-                    <div class="pg-side">
-                        <p class="pg-label c-comment">" {t.pg.label}</p>
-                        <ol class="pg-steps">
-                            {
-                                t.pg.lessons.map((l, i) => (
-                                    <li data-step={i}>
-                                        <button type="button" data-goto={i}>
-                                            {l.title}
-                                        </button>
-                                    </li>
-                                ))
-                            }
-                        </ol>
+            <section class="pg" id="try" data-section="top">
+                <div class="pg-head">
+                    {
+                        t.pg.lessons.map((l, i) => (
+                            <div
+                                class="pg-lesson"
+                                data-lesson={i}
+                                hidden={i !== 0}
+                            >
+                                <p class="pg-title">
+                                    <span class="pg-count">
+                                        {i + 1}/{t.pg.lessons.length}
+                                    </span>
+                                    {l.title}
+                                </p>
+                                <p class="pg-body" set:html={keycaps(l.body)} />
+                                <p class="pg-success" data-success hidden>
+                                    ✓ {l.success}
+                                </p>
+                            </div>
+                        ))
+                    }
+                    <div class="pg-lesson" data-lesson="done" hidden>
+                        <p class="pg-title">{t.pg.doneTitle}</p>
+                        <p class="pg-body">
+                            {t.pg.doneBody.join(' ')}
+                            <code class="code-chip">$ vimtutor</code>
+                        </p>
+                    </div>
+                    <ol class="pg-dots">
                         {
                             t.pg.lessons.map((l, i) => (
-                                <div
-                                    class="pg-lesson"
-                                    data-lesson={i}
-                                    hidden={i !== 0}
-                                >
-                                    <h2>
-                                        <span class="c-statement">
-                                            {i + 1}.
-                                        </span>{' '}
-                                        {l.title}
-                                    </h2>
-                                    <p set:html={keycaps(l.body)} />
-                                    <p class="pg-success" data-success hidden>
-                                        ✓ {l.success}
-                                    </p>
-                                </div>
+                                <li>
+                                    <button
+                                        type="button"
+                                        data-goto={i}
+                                        aria-label={`${i + 1}. ${l.title}`}
+                                    />
+                                </li>
                             ))
                         }
-                        <div
-                            class="pg-lesson pg-done"
-                            data-lesson="done"
-                            hidden
-                        >
-                            <h2 class="c-title">{t.pg.doneTitle}</h2>
-                            <p>
-                                {
-                                    t.pg.doneBody.map((l) => (
-                                        <span class="line">{l}</span>
-                                    ))
-                                }
-                            </p>
-                            <p><code class="code-chip">$ vimtutor</code></p>
-                        </div>
-                        <div class="pg-nav">
-                            <button
-                                type="button"
-                                class="btn btn-sm"
-                                data-act="prev">{t.pg.prev}</button
-                            >
-                            <button
-                                type="button"
-                                class="btn btn-sm"
-                                data-act="reset">{t.pg.reset}</button
-                            >
-                            <button
-                                type="button"
-                                class="btn btn-sm btn-rev"
-                                data-act="next">{t.pg.next}</button
-                            >
-                        </div>
-                    </div>
-                    <div class="pg-editor">
-                        <div class="pg-buf" aria-hidden="true"></div>
-                        <div class="win-status">
-                            <span>practice.txt</span>
-                            <span class="win-pos" data-pos>1,1</span>
-                        </div>
-                        <div class="win-msg" data-msg></div>
-                        <textarea
-                            class="pg-input"
-                            aria-label={t.pg.label}
-                            autocapitalize="off"
-                            autocomplete="off"
-                            spellcheck="false"></textarea>
-                        <button type="button" class="pg-start">
-                            <span class="pg-start-main">{t.pg.start}</span>
-                            <span class="pg-start-sub">{t.pg.startSub}</span>
-                        </button>
-                    </div>
+                    </ol>
                 </div>
-                <div class="pg-keys">
-                    <div class="pg-pad" role="group" aria-label="keys">
-                        {
-                            [
-                                'Esc',
-                                'h',
-                                'j',
-                                'k',
-                                'l',
-                                'x',
-                                'i',
-                                'd',
-                                'u',
-                                ':',
-                                'w',
-                                'q',
-                                '⏎',
-                            ].map((k) => (
-                                <button
-                                    type="button"
-                                    data-key={
-                                        k === '⏎'
-                                            ? 'Enter'
-                                            : k === 'Esc'
-                                              ? 'Escape'
-                                              : k
-                                    }
-                                >
-                                    {k}
-                                </button>
-                            ))
-                        }
+                <div class="pg-editor win">
+                    <div class="pg-buf" aria-hidden="true"></div>
+                    <div class="win-status">
+                        <span>practice.txt</span>
+                        <span class="win-pos" data-pos>1,1</span>
                     </div>
-                    <div class="pg-echo">
-                        <span class="c-comment">{t.pg.pressed}</span>
-                        <span data-echo></span>
-                    </div>
+                    <div class="win-msg" data-msg></div>
+                    <textarea
+                        class="pg-input"
+                        aria-label={t.pg.label}
+                        autocapitalize="off"
+                        autocomplete="off"
+                        spellcheck="false"></textarea>
+                    <button type="button" class="pg-start">{t.pg.start}</button>
+                </div>
+                <div class="kb" aria-label="keyboard"></div>
+                <div class="pg-nav">
+                    <button type="button" data-act="prev">← {t.pg.prev}</button>
+                    <button type="button" data-act="reset">{t.pg.reset}</button>
+                    <button type="button" data-act="next">{t.pg.next} →</button>
                 </div>
             </section>
 
@@ -335,7 +272,6 @@ const pageData = JSON.stringify({
             <!-- 처음이라면 -->
             <section class="sec" id="start" data-section="start">
                 <h2 class="sec-title">
-                    <span class="c-linenr">#</span>
                     {t.startTitle}
                 </h2>
                 <ol class="steps">
@@ -378,7 +314,6 @@ const pageData = JSON.stringify({
             <!-- 행사 -->
             <section class="sec" id="events" data-section="events">
                 <h2 class="sec-title">
-                    <span class="c-linenr">#</span>
                     {t.eventsTitle}
                 </h2>
                 <p class="lead">
@@ -411,7 +346,6 @@ const pageData = JSON.stringify({
                                     />
                                 </summary>
                                 <div class="ev-body">
-                                    <p class="ev-date">{fmtDate(e.date)}</p>
                                     <p class="ev-summary">{e.summary[lang]}</p>
                                     <p class="links">
                                         {e.links.map((l) => (
@@ -469,11 +403,11 @@ const pageData = JSON.stringify({
                                         </ul>
                                     ) : (
                                         e.talks.length > 0 && (
-                                            <ol class="talk-list">
+                                            <ul class="talk-tags">
                                                 {e.talks.map((tk) => (
                                                     <li>{tk.title}</li>
                                                 ))}
-                                            </ol>
+                                            </ul>
                                         )
                                     )}
                                 </div>
@@ -486,7 +420,6 @@ const pageData = JSON.stringify({
             <!-- 사진 -->
             <section class="sec" id="gallery" data-section="gallery">
                 <h2 class="sec-title">
-                    <span class="c-linenr">#</span>
                     {t.galleryTitle}
                 </h2>
                 <div class="filters" role="group">
@@ -528,7 +461,6 @@ const pageData = JSON.stringify({
             <!-- 함께하기 -->
             <section class="sec join" id="join" data-section="join">
                 <h2 class="sec-title">
-                    <span class="c-linenr">#</span>
                     {t.joinTitle}
                 </h2>
                 <p class="lead">

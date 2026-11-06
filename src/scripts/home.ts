@@ -342,13 +342,28 @@ export function initHome() {
     lightbox.addEventListener('close', () => setMode('NORMAL'))
     lightbox.addEventListener('click', (e) => {
         const act = (e.target as HTMLElement).dataset.lb
+        if (act) pressLb(act)
         if (act === 'prev') show(idx - 1)
         else if (act === 'next') show(idx + 1)
         else if (act === 'close' || e.target === lightbox) lightbox.close()
     })
+    const pressLb = (act: string) => {
+        const b = lightbox.querySelector<HTMLElement>(`[data-lb="${act}"]`)!
+        b.classList.remove('down')
+        void b.offsetWidth
+        b.classList.add('down')
+        setTimeout(() => b.classList.remove('down'), 140)
+    }
     lightbox.addEventListener('keydown', (e) => {
-        if (e.key === 'h' || e.key === 'ArrowLeft') show(idx - 1)
-        else if (e.key === 'l' || e.key === 'ArrowRight') show(idx + 1)
-        else if (e.key === 'q') lightbox.close()
+        if (e.key === 'h' || e.key === 'ArrowLeft') {
+            pressLb('prev')
+            show(idx - 1)
+        } else if (e.key === 'l' || e.key === 'ArrowRight') {
+            pressLb('next')
+            show(idx + 1)
+        } else if (e.key === 'q') {
+            pressLb('close')
+            setTimeout(() => lightbox.close(), 120)
+        }
     })
 }

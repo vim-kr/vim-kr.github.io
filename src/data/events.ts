@@ -47,9 +47,9 @@ export const events: VimEvent[] = [
             ja: 'チューリングのりんご（ソウル）',
         },
         summary: {
-            ko: 'Git 사용자를 위한 Jujutsu(jj) 워크숍. Tangled 개발자 boltless 님과 Git 내부 구조부터 jj 데이터 모델, squash와 rebase, 메가 머지 워크플로우까지 직접 실습했습니다.',
-            en: 'A hands-on Jujutsu (jj) workshop for Git users. With boltless, a Tangled developer, we went from Git internals to the jj data model, squash and rebase, and the mega-merge workflow.',
-            ja: 'Git ユーザーのための Jujutsu（jj）ワークショップ。Tangled 開発者の boltless さんと、Git の内部構造から jj のデータモデル、squash と rebase、メガマージのワークフローまで実習しました。',
+            ko: 'Git 사용자를 위한 Jujutsu(jj) 실습 워크숍. Tangled 개발자 boltless 님이 진행했어요.',
+            en: 'A hands-on Jujutsu (jj) workshop for Git users, led by boltless from Tangled.',
+            ja: 'Git ユーザー向けの Jujutsu（jj）実習ワークショップ。Tangled 開発者の boltless さんが担当。',
         },
         links: [
             {
@@ -84,9 +84,9 @@ export const events: VimEvent[] = [
         name: 'VIMRC 2025',
         date: '2025-11-30',
         summary: {
-            ko: '한 해 동안 다듬은 설정과 이야기를 나눈 연말 모임. 한글 입력의 한계, awk, Fennel로 짠 Neovim 설정, init.lua 다이어트, 플러그인 개발기까지.',
-            en: 'Our year-end meetup about the configs we polished all year: Korean input, awk, a Neovim setup in Fennel, an init.lua diet, and building a plugin.',
-            ja: '一年かけて磨いた設定を語り合う年末の集まり。ハングル入力の限界、awk、Fennel で書く Neovim 設定、init.lua ダイエット、プラグイン開発まで。',
+            ko: '한 해 동안 다듬은 설정을 나눈 연말 모임.',
+            en: 'A year-end meetup about the configs we polished.',
+            ja: '一年かけて磨いた設定を語る年末の集まり。',
         },
         links: [
             {
@@ -108,9 +108,9 @@ export const events: VimEvent[] = [
         name: 'VimEnter 2024',
         date: '2024-12-21',
         summary: {
-            ko: '세 번째 VimEnter. IdeaVim과 vscode-vim 사용기부터 nix, vised, 의도를 먼저 선언하는 Git 워크플로우까지 여덟 개의 발표.',
-            en: 'The third VimEnter: eight talks, from IdeaVim and vscode-vim to nix, vised, and an intent-first Git workflow.',
-            ja: '3回目の VimEnter。IdeaVim や vscode-vim の体験談から nix、vised、意図を先に宣言する Git ワークフローまで8本の発表。',
+            ko: '세 번째 VimEnter 모임.',
+            en: 'Our third VimEnter.',
+            ja: '3回目の VimEnter。',
         },
         links: [
             {
@@ -171,9 +171,9 @@ export const events: VimEvent[] = [
         name: 'VimEnter 2023',
         date: '2023-12-23',
         summary: {
-            ko: '두 번째 VimEnter. Neovim으로 생산성 높이기, 트리시터 플러그인 만들기, Vimwiki용 LSP 만들기 등 여섯 개의 발표.',
-            en: 'The second VimEnter: six talks on Neovim productivity, writing a Tree-sitter plugin, building an LSP for Vimwiki, and more.',
-            ja: '2回目の VimEnter。Neovim で生産性を上げる話、Tree-sitter プラグイン作り、Vimwiki 用 LSP 作りなど6本の発表。',
+            ko: '두 번째 VimEnter 모임.',
+            en: 'Our second VimEnter.',
+            ja: '2回目の VimEnter。',
         },
         links: [
             {
@@ -230,9 +230,9 @@ export const events: VimEvent[] = [
         name: 'VimEnter 2022',
         date: '2022-12-23',
         summary: {
-            ko: '첫 번째 VimEnter. Vim을 좋아하는 사람들이 처음으로 온라인과 오프라인에서 함께 모였습니다.',
-            en: 'The first VimEnter, where people who love Vim met for the first time, online and offline.',
-            ja: '最初の VimEnter。Vim を愛する人たちがオンラインとオフラインで初めて集まりました。',
+            ko: '첫 번째 VimEnter 모임.',
+            en: 'The very first VimEnter.',
+            ja: '最初の VimEnter。',
         },
         links: [
             {
