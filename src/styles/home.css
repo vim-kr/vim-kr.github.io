@@ -161,7 +161,8 @@ mark {
     z-index: 30;
     display: flex;
     align-items: stretch;
-    height: 44px;
+    height: 54px;
+    padding-left: 16px;
     background: var(--fg);
     font-family: var(--mono);
     font-size: 14px;
@@ -170,22 +171,43 @@ mark {
 .brand {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 0 16px 0 12px;
+    gap: 10px;
+    padding-right: 28px;
+    font-size: 17px;
     font-weight: 800;
-    color: var(--fg);
-    background: var(--bg);
+    color: var(--bg);
     text-decoration: none;
-    border-right: 1px solid var(--fg);
 }
 
 .brand img {
+    width: 30px;
+    height: 30px;
+    padding: 3px;
     object-fit: contain;
+    background: var(--bg);
+    border-radius: 6px;
+}
+
+.brand-name::after {
+    content: '';
+    display: inline-block;
+    width: 0.55em;
+    height: 1.05em;
+    margin-left: 3px;
+    vertical-align: -0.15em;
+    background: #90ee90;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .brand-name::after {
+        animation: blink 1.1s steps(1) infinite;
+    }
 }
 
 .tabs {
     display: flex;
-    gap: 1px;
+    align-items: flex-end;
+    gap: 2px;
     min-width: 0;
     overflow-x: auto;
     scrollbar-width: none;
@@ -199,11 +221,12 @@ mark {
     display: flex;
     align-items: center;
     gap: 6px;
+    height: 40px;
     padding: 0 16px;
     color: var(--fg);
     background: var(--visual);
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    border-radius: 5px 5px 0 0;
+    text-decoration: none;
     white-space: nowrap;
 }
 
@@ -219,7 +242,6 @@ mark {
 .tab.active {
     background: var(--bg);
     font-weight: 800;
-    text-decoration: none;
 }
 
 .tab-right {
@@ -1327,12 +1349,22 @@ button.code-chip {
     }
 
     .tabline {
-        height: 40px;
+        height: 46px;
+        padding-left: 10px;
         font-size: 13px;
     }
 
     .brand {
-        padding: 0 8px;
+        padding-right: 10px;
+    }
+
+    .brand img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .tab {
+        height: 34px;
     }
 
     .brand-name,
