@@ -15,6 +15,9 @@ const t = ui[lang]
 const site = 'https://vim.kr'
 const current = langs.find((l) => l.code === lang)!
 const home = current.path
+// 카카오톡, 슬랙 등 공유 미리보기용. 이미지는 public/og/<lang>.png (1200x630)
+const ogImage = `${site}/og/${lang}.png`
+const ogLocale: Record<Lang, string> = { ko: 'ko_KR', en: 'en_US', ja: 'ja_JP' }
 const tabHref = (k: string) => (path ? `${home}#${k}` : `#${k}`)
 const pageData = JSON.stringify({
     lang,
@@ -44,13 +47,29 @@ const pageData = JSON.stringify({
         ))}
         <link rel="alternate" hreflang="x-default" href={site + '/' + path} />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="vim.kr" />
+        <meta property="og:locale" content={ogLocale[lang]} />
+        {langs
+            .filter((l) => l.code !== lang)
+            .map((l) => (
+                <meta
+                    property="og:locale:alternate"
+                    content={ogLocale[l.code]}
+                />
+            ))}
         <meta property="og:title" content={title} />
         <meta property="og:description" content={desc} />
         <meta property="og:url" content={site + current.path + path} />
-        <meta
-            property="og:image"
-            content={site + '/events/vimrc-2025/11.webp'}
-        />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={title} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={desc} />
+        <meta name="twitter:image" content={ogImage} />
+        <link rel="apple-touch-icon" href="/vimkr.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
