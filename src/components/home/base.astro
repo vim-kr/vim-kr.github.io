@@ -1,0 +1,172 @@
+---
+import '../../styles/home.css'
+import type { Lang } from '../../data/events'
+import { ui, langs, DISCORD } from '../../i18n/ui'
+
+interface Props {
+    lang: Lang
+    path?: string // 언어 경로 뒤에 붙는 하위 경로, 예: 'events/'
+    title: string
+    desc: string
+}
+
+const { lang, path = '', title, desc } = Astro.props
+const t = ui[lang]
+const site = 'https://vim.kr'
+const current = langs.find((l) => l.code === lang)!
+const home = current.path
+const tabHref = (k: string) => (path ? `${home}#${k}` : `#${k}`)
+const pageData = JSON.stringify({
+    lang,
+    home,
+    cmd: t.cmd,
+    langs: langs.map((l) => [l.code, l.path]),
+    typed: t.heroTyped,
+})
+---
+
+<!doctype html>
+<html lang={lang}>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{title}</title>
+        <meta name="description" content={desc} />
+        <meta name="theme-color" content="#ffffff" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href={site + current.path + path} />
+        {
+            langs.map((l) => (
+                <link
+                    rel="alternate"
+                    hreflang={l.code}
+                    href={site + l.path + path}
+                />
+            ))
+        }
+        <link rel="alternate" hreflang="x-default" href={site + '/' + path} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={desc} />
+        <meta property="og:url" content={site + current.path + path} />
+        <meta
+            property="og:image"
+            content={site + '/events/vimrc-2025/11.webp'}
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Nanum+Gothic+Coding:wght@400;700&display=swap"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        />
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-Y2Y08PZHV2"
+        ></script>
+        <script is:inline>
+            window.dataLayer = window.dataLayer || []
+            function gtag() {
+                dataLayer.push(arguments)
+            }
+            gtag('js', new Date())
+            gtag('config', 'G-Y2Y08PZHV2')
+        </script>
+    </head>
+    <body data-page={pageData}>
+        <!-- tabline: Vim 기본 TabLine 모양 -->
+        <nav class="tabline" aria-label="Menu">
+            <a class="brand" href={current.path}>
+                <img src="/vimkr.png" alt="" width="22" height="22" />
+                <span class="brand-name">vim.kr</span>
+            </a>
+            <div class="tabs">
+                {
+                    (['start', 'events', 'gallery', 'join'] as const).map(
+                        (k, i) => (
+                            <a class="tab" href={tabHref(k)} data-tab={k}>
+                                <span class="tab-n">{i + 1}</span>
+                                {t.nav[k]}
+                            </a>
+                        )
+                    )
+                }
+            </div>
+            <div class="tab-right">
+                <div class="langs">
+                    {
+                        langs.map((l) => (
+                            <a
+                                href={l.path + path}
+                                hreflang={l.code}
+                                lang={l.code}
+                                aria-current={
+                                    l.code === lang ? 'true' : undefined
+                                }
+                            >
+                                {l.code}
+                            </a>
+                        ))
+                    }
+                </div>
+                <a class="btn-tab" href={DISCORD} target="_blank" rel="noopener"
+                    >{t.discord}</a
+                >
+            </div>
+        </nav>
+
+        <slot />
+
+        <!-- 페이지 상태줄과 명령줄 -->
+        <div class="bottom">
+            <ul class="wildmenu" id="wildmenu" hidden>
+                {
+                    t.cmd.list.map(([c, d]) => (
+                        <li>
+                            <button type="button" data-cmd={c}>
+                                <b>:{c}</b> <span>{d}</span>
+                            </button>
+                        </li>
+                    ))
+                }
+            </ul>
+            <div class="statusline">
+                <span class="mode" id="sl-mode">NORMAL</span>
+                <span class="sl-file"
+                    >vim.kr/{lang}{
+                        path ? '/' + path.replace(/\/$/, '') : ''
+                    }</span
+                >
+                <span class="sl-right"
+                    ><span class="sl-keys">{t.cmd.keys}</span><span id="sl-pct"
+                        >Top</span
+                    ></span
+                >
+            </div>
+            <form class="cmdline" id="cmdline" autocomplete="off">
+                <button type="button" class="cmd-hint" id="cmd-hint">
+                    <kbd>:</kbd>
+                    <span class="hint-key">{t.cmd.hint}</span>
+                    <span class="hint-touch">{t.cmd.touch}</span>
+                </button>
+                <label class="cmd-wrap" hidden>
+                    <span>:</span>
+                    <input
+                        id="cmd-input"
+                        spellcheck="false"
+                        autocapitalize="off"
+                        aria-label="command"
+                    />
+                </label>
+            </form>
+        </div>
+
+        <script>
+            import { initShell } from '../../scripts/shell'
+            initShell()
+        </script>
+    </body>
+</html>
