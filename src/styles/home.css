@@ -1111,6 +1111,10 @@ button.code-chip {
     color: var(--fg);
 }
 
+.cmd-hint[hidden] {
+    display: none;
+}
+
 .cmd-hint kbd {
     font-size: 12px;
     line-height: 1.4;
