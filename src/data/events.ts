@@ -83,12 +83,7 @@ export const events: VimEvent[] = [
             en: 'A year-end meetup about the configs we polished.',
             ja: '一年かけて磨いた設定を語る年末の集まり。',
         },
-        links: [
-            {
-                label: { ko: '발표 자료', en: 'Slides', ja: '発表資料' },
-                href: 'https://drive.google.com/drive/folders/1aMdH36D0PK8kvXN2zyV1S5uknb0rLIXf',
-            },
-        ],
+        links: [],
         talks: [
             { title: 'VIM과 한글, 그 한계를 넘어서기' },
             { title: 'awk on vim' },
