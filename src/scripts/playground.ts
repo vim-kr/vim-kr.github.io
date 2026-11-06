@@ -281,7 +281,13 @@ export function initPlayground() {
             root.querySelector<HTMLElement>(
                 `[data-lesson="${step}"] [data-success]`
             )!.hidden = false
-            if (step === LESSONS.length - 1) setTimeout(finish, 900)
+            // 성공 문구를 잠깐 보여 주고 다음 단계로 넘어간다
+            const done = step
+            setTimeout(() => {
+                if (step !== done) return
+                if (done === LESSONS.length - 1) finish()
+                else load(done + 1)
+            }, 1200)
         }
         render()
     }

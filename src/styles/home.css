@@ -606,6 +606,11 @@ button.code-chip {
     font-weight: 800;
 }
 
+.pg-buf .goal.cur {
+    color: var(--search);
+    background: var(--fg);
+}
+
 .pg:not(.focused) .pg-buf .cur {
     background: var(--visual);
     color: var(--fg);
