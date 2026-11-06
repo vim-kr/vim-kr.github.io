@@ -73,9 +73,8 @@ const pastEvents = events.filter((e) => e.id !== featured.id)
                     1,1
                 </span>
             </div>
-            <div class="win-msg" id="hero-msg">
-                <b>-- INSERT --</b>
-            </div>
+            <!-- win-msg 는 white-space: pre 라 줄바꿈 공백이 보이지 않게 set:html 로 넣는다 -->
+            <div class="win-msg" id="hero-msg" set:html="<b>-- INSERT --</b>" />
         </section>
 
         <!-- 연습 화면 -->
