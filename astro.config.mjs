@@ -1,13 +1,8 @@
 import { defineConfig } from 'astro/config'
-import tailwind from '@astrojs/tailwind'
-
-import react from '@astrojs/react'
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://vim.kr',
-  integrations: [
-    tailwind(),
-    react(),
-  ],
+  // Astro 7 기본(jsx) 공백 처리는 줄바꿈 사이 공백을 지워 문구가 붙는다. 예전 방식 유지
+  compressHTML: true,
 })

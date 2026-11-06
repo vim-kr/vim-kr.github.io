@@ -1,18 +1,9 @@
 {
-  "extends": "astro/tsconfigs/base",
+  "extends": "astro/tsconfigs/base.json",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "node_modules"],
   "compilerOptions": {
-    "strictNullChecks": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
-    "baseUrl": ".",
-    "paths": {
-      "components/*": ["src/components/*"],
-      "stores/*": ["src/stores/*"],
-      "pages/*": ["src/pages/*"],
-      "styles/*": ["src/styles/*"],
-      "utils/*": ["src/utils/*"]
-    }
-  },
-  "skipLibCheck": true,
-  "exclude": ["node_modules"]
+    "strict": false,
+    "strictNullChecks": true
+  }
 }

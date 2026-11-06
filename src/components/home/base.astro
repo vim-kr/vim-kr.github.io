@@ -15,6 +15,10 @@ const t = ui[lang]
 const site = 'https://vim.kr'
 const current = langs.find((l) => l.code === lang)!
 const home = current.path
+// 카카오톡, 슬랙 등 공유 미리보기용. 이미지는 public/og/<lang>.png (1200x630)
+const ogImage = `${site}/og/${lang}.png`
+const ogLocale: Record<Lang, string> = { ko: 'ko_KR', en: 'en_US', ja: 'ja_JP' }
+const slFile = `vim.kr/${lang}${path ? '/' + path.replace(/\/$/, '') : ''}`
 const tabHref = (k: string) => (path ? `${home}#${k}` : `#${k}`)
 const pageData = JSON.stringify({
     lang,
@@ -35,24 +39,38 @@ const pageData = JSON.stringify({
         <meta name="theme-color" content="#ffffff" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="canonical" href={site + current.path + path} />
-        {
-            langs.map((l) => (
-                <link
-                    rel="alternate"
-                    hreflang={l.code}
-                    href={site + l.path + path}
-                />
-            ))
-        }
+        {langs.map((l) => (
+            <link
+                rel="alternate"
+                hreflang={l.code}
+                href={site + l.path + path}
+            />
+        ))}
         <link rel="alternate" hreflang="x-default" href={site + '/' + path} />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="vim.kr" />
+        <meta property="og:locale" content={ogLocale[lang]} />
+        {langs
+            .filter((l) => l.code !== lang)
+            .map((l) => (
+                <meta
+                    property="og:locale:alternate"
+                    content={ogLocale[l.code]}
+                />
+            ))}
         <meta property="og:title" content={title} />
         <meta property="og:description" content={desc} />
         <meta property="og:url" content={site + current.path + path} />
-        <meta
-            property="og:image"
-            content={site + '/events/vimrc-2025/11.webp'}
-        />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={title} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={desc} />
+        <meta name="twitter:image" content={ogImage} />
+        <link rel="apple-touch-icon" href="/vimkr.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -70,6 +88,8 @@ const pageData = JSON.stringify({
         <script is:inline>
             window.dataLayer = window.dataLayer || []
             function gtag() {
+                // Google 이 안내하는 gtag 코드 그대로 둔다
+                // eslint-disable-next-line prefer-rest-params
                 dataLayer.push(arguments)
             }
             gtag('js', new Date())
@@ -84,37 +104,36 @@ const pageData = JSON.stringify({
                 <span class="brand-name">vim.kr</span>
             </a>
             <div class="tabs">
-                {
-                    (['start', 'events', 'gallery', 'join'] as const).map(
-                        (k, i) => (
-                            <a class="tab" href={tabHref(k)} data-tab={k}>
-                                <span class="tab-n">{i + 1}</span>
-                                {t.nav[k]}
-                            </a>
-                        )
+                {(['start', 'events', 'gallery', 'join'] as const).map(
+                    (k, i) => (
+                        <a class="tab" href={tabHref(k)} data-tab={k}>
+                            <span class="tab-n">{i + 1}</span>
+                            {t.nav[k]}
+                        </a>
                     )
-                }
+                )}
             </div>
             <div class="tab-right">
                 <div class="langs">
-                    {
-                        langs.map((l) => (
-                            <a
-                                href={l.path + path}
-                                hreflang={l.code}
-                                lang={l.code}
-                                aria-current={
-                                    l.code === lang ? 'true' : undefined
-                                }
-                            >
-                                {l.code}
-                            </a>
-                        ))
-                    }
+                    {langs.map((l) => (
+                        <a
+                            href={l.path + path}
+                            hreflang={l.code}
+                            lang={l.code}
+                            aria-current={l.code === lang ? 'true' : undefined}
+                        >
+                            {l.code}
+                        </a>
+                    ))}
                 </div>
-                <a class="btn-tab" href={DISCORD} target="_blank" rel="noopener"
-                    >{t.discord}</a
+                <a
+                    class="btn-tab"
+                    href={DISCORD}
+                    target="_blank"
+                    rel="noopener"
                 >
+                    {t.discord}
+                </a>
             </div>
         </nav>
 
@@ -123,28 +142,23 @@ const pageData = JSON.stringify({
         <!-- 페이지 상태줄과 명령줄 -->
         <div class="bottom">
             <ul class="wildmenu" id="wildmenu" hidden>
-                {
-                    t.cmd.list.map(([c, d]) => (
-                        <li>
-                            <button type="button" data-cmd={c}>
-                                <b>:{c}</b> <span>{d}</span>
-                            </button>
-                        </li>
-                    ))
-                }
+                {t.cmd.list.map(([c, d]) => (
+                    <li>
+                        <button type="button" data-cmd={c}>
+                            <b>:{c}</b> <span>{d}</span>
+                        </button>
+                    </li>
+                ))}
             </ul>
             <div class="statusline">
-                <span class="mode" id="sl-mode">NORMAL</span>
-                <span class="sl-file"
-                    >vim.kr/{lang}{
-                        path ? '/' + path.replace(/\/$/, '') : ''
-                    }</span
-                >
-                <span class="sl-right"
-                    ><span class="sl-keys">{t.cmd.keys}</span><span id="sl-pct"
-                        >Top</span
-                    ></span
-                >
+                <span class="mode" id="sl-mode">
+                    NORMAL
+                </span>
+                <span class="sl-file">{slFile}</span>
+                <span class="sl-right">
+                    <span class="sl-keys">{t.cmd.keys}</span>
+                    <span id="sl-pct">Top</span>
+                </span>
             </div>
             <form class="cmdline" id="cmdline" autocomplete="off">
                 <button type="button" class="cmd-hint" id="cmd-hint">

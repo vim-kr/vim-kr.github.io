@@ -1,4 +1,71 @@
 /* vim.kr home: Vim 기본 색 (gvim `:colorscheme default`, background=light) */
+
+/* ---------- 기본 초기화 (예전 Tailwind preflight 에서 쓰던 부분) ---------- */
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    border: 0 solid;
+}
+
+h1,
+h2,
+h3,
+p,
+ol,
+ul,
+dl,
+dd,
+figure {
+    margin: 0;
+}
+
+h1,
+h2,
+h3 {
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+ol,
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+img,
+iframe,
+video {
+    display: block;
+    vertical-align: middle;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    background-image: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+/* ---------- 색 ---------- */
 :root {
     --bg: #ffffff;
     --fg: #000000;
@@ -13,13 +80,17 @@
     --pmenu: #ffc0cb; /* Pmenu */
     --pmenu-sel: #bebebe; /* PmenuSel */
     --error: #ff0000; /* ErrorMsg */
-    --mono: 'JetBrains Mono', 'Nanum Gothic Coding', ui-monospace, Menlo, monospace;
-    --sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Apple SD Gothic Neo', system-ui, sans-serif;
+    --mono:
+        'JetBrains Mono', 'Nanum Gothic Coding', ui-monospace, Menlo, monospace;
+    --sans:
+        'Pretendard', -apple-system, BlinkMacSystemFont, 'Hiragino Sans',
+        'Apple SD Gothic Neo', system-ui, sans-serif;
     --bar-h: 50px;
     color-scheme: light;
 }
 
 html {
+    -webkit-text-size-adjust: 100%;
     background: var(--bg);
     scroll-padding-top: 56px;
 }
@@ -110,7 +181,9 @@ mark {
     box-shadow: 0 3px 0 var(--fg);
     text-decoration: none;
     cursor: pointer;
-    transition: transform 0.08s, box-shadow 0.08s;
+    transition:
+        transform 0.08s,
+        box-shadow 0.08s;
 }
 
 .btn:hover {
@@ -695,7 +768,10 @@ button.code-chip {
     border-radius: 6px;
     box-shadow: 0 3px 0 #bdbdbd;
     cursor: pointer;
-    transition: transform 0.06s, box-shadow 0.06s, background 0.06s;
+    transition:
+        transform 0.06s,
+        box-shadow 0.06s,
+        background 0.06s;
 }
 
 .kb-key.hint {
@@ -1282,7 +1358,10 @@ button.code-chip {
 }
 
 .lb-btn {
-    transition: transform 0.07s, box-shadow 0.07s, background 0.07s;
+    transition:
+        transform 0.07s,
+        box-shadow 0.07s,
+        background 0.07s;
 }
 
 .lb-btn:active,

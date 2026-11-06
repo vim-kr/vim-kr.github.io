@@ -116,7 +116,7 @@ function keyFromCode(e: KeyboardEvent): string | null {
     if (/^Key[A-Z]$/.test(c)) return e.shiftKey ? c[3] : c[3].toLowerCase()
     if (/^Digit\d$/.test(c))
         return e.shiftKey
-            ? ({ 4: '$', 6: '^' } as Record<string, string>)[c[5]] ?? null
+            ? (({ 4: '$', 6: '^' } as Record<string, string>)[c[5]] ?? null)
             : c[5]
     if (c === 'Semicolon' && e.shiftKey) return ':'
     if (c === 'Space') return ' '
