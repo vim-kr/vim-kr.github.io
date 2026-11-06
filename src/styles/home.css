@@ -467,8 +467,8 @@ main {
     margin-top: 48px;
     padding: 20px 24px;
     background: var(--bg-dark);
-    border-left: 3px solid var(--purple);
-    border-radius: 0 4px 4px 0;
+    border: 1px solid var(--line);
+    border-radius: 4px;
 }
 
 .comment {
