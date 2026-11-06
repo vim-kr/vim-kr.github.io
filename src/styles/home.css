@@ -90,6 +90,7 @@ a {
 }
 
 html {
+    -webkit-text-size-adjust: 100%;
     background: var(--bg);
     scroll-padding-top: 56px;
 }

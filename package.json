@@ -11,7 +11,7 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "**/*.{js,ts,astro}": [
+    "**/*.{js,mjs,ts,astro}": [
       "eslint --fix",
       "prettier --write"
     ],
@@ -37,5 +37,8 @@
     "prettier-plugin-astro": "^1.1.2",
     "typescript": "~6.0",
     "typescript-eslint": "^8.72.1"
+  },
+  "resolutions": {
+    "**/anymatch/picomatch": "^2.3.2"
   }
 }

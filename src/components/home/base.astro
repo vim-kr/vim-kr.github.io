@@ -18,6 +18,7 @@ const home = current.path
 // 카카오톡, 슬랙 등 공유 미리보기용. 이미지는 public/og/<lang>.png (1200x630)
 const ogImage = `${site}/og/${lang}.png`
 const ogLocale: Record<Lang, string> = { ko: 'ko_KR', en: 'en_US', ja: 'ja_JP' }
+const slFile = `vim.kr/${lang}${path ? '/' + path.replace(/\/$/, '') : ''}`
 const tabHref = (k: string) => (path ? `${home}#${k}` : `#${k}`)
 const pageData = JSON.stringify({
     lang,
@@ -153,10 +154,7 @@ const pageData = JSON.stringify({
                 <span class="mode" id="sl-mode">
                     NORMAL
                 </span>
-                <span class="sl-file">
-                    vim.kr/{lang}
-                    {path ? '/' + path.replace(/\/$/, '') : ''}
-                </span>
+                <span class="sl-file">{slFile}</span>
                 <span class="sl-right">
                     <span class="sl-keys">{t.cmd.keys}</span>
                     <span id="sl-pct">Top</span>
