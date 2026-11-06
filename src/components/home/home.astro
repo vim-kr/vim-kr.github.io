@@ -1,0 +1,570 @@
+---
+import '../../styles/home.css'
+import { events, featured, type Lang } from '../../data/events'
+import { ui, langs, DISCORD, GITHUB } from '../../i18n/ui'
+
+interface Props {
+    lang: Lang
+}
+
+const { lang } = Astro.props
+const t = ui[lang]
+const site = 'https://vim.kr'
+const current = langs.find((l) => l.code === lang)!
+const fileName = `README.${lang}.md`
+
+const fmtDate = (d: string) =>
+    new Intl.DateTimeFormat(
+        lang === 'ko' ? 'ko-KR' : lang === 'ja' ? 'ja-JP' : 'en-US',
+        {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        }
+    ).format(new Date(d + 'T00:00:00'))
+
+const photos = events.flatMap((e) =>
+    e.photos.map((p) => ({ ...p, event: e.id, name: e.name, date: e.date }))
+)
+const galleryFilters = events.filter((e) => e.photos.length > 0)
+
+const usedFor = [
+    { ft: 'web', logos: ['react', 'astro', 'svelte', 'django', 'rails'] },
+    { ft: 'mobile', logos: ['flutter', 'react'] },
+    { ft: 'notes', logos: ['obsidian'] },
+    { ft: 'research', logos: ['jupyter', 'latex'] },
+    { ft: 'tui', logos: ['git', 'github', 'openai'] },
+]
+
+const heroLines = 9
+const script = JSON.stringify({
+    lang,
+    hint: t.hint,
+    hintTouch: t.hintTouch,
+    notCmd: t.notCmd,
+    quit: t.quit,
+    langs: langs.map((l) => [l.code, l.path]),
+})
+---
+
+<!doctype html>
+<html lang={lang}>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{t.metaTitle}</title>
+        <meta name="description" content={t.metaDesc} />
+        <meta name="theme-color" content="#1a1b26" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href={site + current.path} />
+        {
+            langs.map((l) => (
+                <link rel="alternate" hreflang={l.code} href={site + l.path} />
+            ))
+        }
+        <link rel="alternate" hreflang="x-default" href={site + '/'} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={t.metaTitle} />
+        <meta property="og:description" content={t.metaDesc} />
+        <meta property="og:url" content={site + current.path} />
+        <meta
+            property="og:image"
+            content={site + '/events/vimrc-2025/11.webp'}
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        />
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-Y2Y08PZHV2"
+        ></script>
+        <script is:inline>
+            window.dataLayer = window.dataLayer || []
+            function gtag() {
+                dataLayer.push(arguments)
+            }
+            gtag('js', new Date())
+            gtag('config', 'G-Y2Y08PZHV2')
+        </script>
+    </head>
+    <body data-vim={script}>
+        <a class="skip" href="#main">Skip to content</a>
+
+        <!-- tabline -->
+        <nav class="tabline" aria-label="Sections">
+            <a class="brand" href={current.path}>
+                <img src="/vimkr.png" alt="" width="20" height="20" />
+                <span>vim.kr</span>
+            </a>
+            <div class="tabs">
+                {
+                    (
+                        ['home', 'events', 'gallery', 'join', 'docs'] as const
+                    ).map((k, i) => (
+                        <a
+                            class="tab"
+                            href={`#${k === 'home' ? 'top' : k}`}
+                            data-tab={k === 'home' ? 'top' : k}
+                        >
+                            <span class="tab-n">{i + 1}</span>
+                            {t.tabs[k]}
+                        </a>
+                    ))
+                }
+            </div>
+            <div class="langs" aria-label="Language">
+                {
+                    langs.map((l) => (
+                        <a
+                            href={l.path}
+                            hreflang={l.code}
+                            lang={l.code}
+                            aria-current={l.code === lang ? 'true' : undefined}
+                        >
+                            {l.code}
+                        </a>
+                    ))
+                }
+            </div>
+        </nav>
+
+        <main id="main">
+            <!-- hero: vertical split, intro buffer + latest video -->
+            <section id="top" class="hero" data-section="top">
+                <div class="buffer intro">
+                    <ol class="gutter" aria-hidden="true">
+                        {
+                            Array.from({ length: heroLines }, (_, i) => (
+                                <li>{i + 1}</li>
+                            ))
+                        }
+                    </ol>
+                    <div class="intro-body">
+                        <p class="kicker">{t.heroKicker}</p>
+                        <h1>
+                            {t.heroTitle}<span class="cursor" aria-hidden="true"
+                            ></span>
+                        </h1>
+                        <p class="lead">{t.heroBody}</p>
+                        <ul class="cmds">
+                            {
+                                t.heroCmds.map((c) => (
+                                    <li>
+                                        <a href={c.href}>
+                                            <span class="type">type</span>
+                                            <code>
+                                                {c.cmd}
+                                                <span class="enter">
+                                                    &lt;Enter&gt;
+                                                </span>
+                                            </code>
+                                            <span class="desc">{c.desc}</span>
+                                        </a>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="buffer video-win">
+                    <div class="win-bar">
+                        <span class="dot"></span>
+                        <span class="win-title"
+                            >{
+                                featured.name.toLowerCase().replace(/\s+/g, '-')
+                            }.mp4</span
+                        >
+                        <span class="win-meta">{fmtDate(featured.date)}</span>
+                    </div>
+                    <div class="video-frame">
+                        <iframe
+                            src={`https://www.youtube-nocookie.com/embed/${featured.video}?rel=0`}
+                            title={featured.talks[0].title}
+                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-caption">
+                        <p class="eyebrow">{t.latest}</p>
+                        <h2>{featured.talks[0].title}</h2>
+                        <p>{featured.summary[lang]}</p>
+                        <div class="links">
+                            {
+                                featured.links.map((l) => (
+                                    <a
+                                        href={l.href}
+                                        target="_blank"
+                                        rel="noopener"
+                                    >
+                                        {l.label[lang]} ↗
+                                    </a>
+                                ))
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- about: help-file style -->
+            <section id="about" class="sec" data-section="top">
+                <header class="help-head">
+                    <h2><span class="num">1.</span> {t.aboutTitle}</h2>
+                    <span class="tag">*vimkr-about*</span>
+                </header>
+                <div class="about-grid">
+                    {
+                        t.about.map((a) => (
+                            <article class="help-entry">
+                                <span class="tag">*{a.tag}*</span>
+                                <h3>{a.title}</h3>
+                                <p>{a.body}</p>
+                            </article>
+                        ))
+                    }
+                </div>
+                <div class="filetypes">
+                    <p class="comment">" {t.usedFor}</p>
+                    <ul>
+                        {
+                            usedFor.map((u) => (
+                                <li>
+                                    <code>
+                                        <span class="kw">set</span> filetype=
+                                        <span class="str">{u.ft}</span>
+                                    </code>
+                                    <span class="logos">
+                                        {u.logos.map((l) => (
+                                            <img
+                                                src={`/${l}-logo.png`}
+                                                alt={l}
+                                                title={l}
+                                                loading="lazy"
+                                            />
+                                        ))}
+                                    </span>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+            </section>
+
+            <!-- events: folds -->
+            <section id="events" class="sec" data-section="events">
+                <header class="help-head">
+                    <h2><span class="num">2.</span> {t.eventsTitle}</h2>
+                    <span class="tag">*vimkr-events*</span>
+                </header>
+                <p class="sec-lead">{t.eventsLead}</p>
+                <div class="folds">
+                    {
+                        events.map((e, i) => (
+                            <details class="fold" id={e.id} open={i < 2}>
+                                <summary>
+                                    <span
+                                        class="fold-mark"
+                                        aria-hidden="true"
+                                    />
+                                    <span class="fold-name">{e.name}</span>
+                                    <span
+                                        class="fold-fill"
+                                        aria-hidden="true"
+                                    />
+                                    <span class="fold-meta">
+                                        <time datetime={e.date}>
+                                            {fmtDate(e.date)}
+                                        </time>
+                                        {e.talks.length > 1 && (
+                                            <span>
+                                                · {e.talks.length}
+                                                {t.talksUnit}
+                                            </span>
+                                        )}
+                                        {e.photos.length > 0 && (
+                                            <span>
+                                                · {e.photos.length}
+                                                {t.photosUnit}
+                                            </span>
+                                        )}
+                                    </span>
+                                </summary>
+                                <div class="fold-body">
+                                    <p class="summary">{e.summary[lang]}</p>
+                                    {e.venue && (
+                                        <p class="venue">@ {e.venue[lang]}</p>
+                                    )}
+                                    <div class="links">
+                                        {e.links.map((l) => (
+                                            <a
+                                                href={l.href}
+                                                target="_blank"
+                                                rel="noopener"
+                                            >
+                                                {l.label[lang]} ↗
+                                            </a>
+                                        ))}
+                                        {e.photos.length > 0 && (
+                                            <a
+                                                href="#gallery"
+                                                data-filter-link={e.id}
+                                            >
+                                                {t.seePhotos} →
+                                            </a>
+                                        )}
+                                    </div>
+                                    {e.id !== featured.id &&
+                                        e.talks.some((tk) => tk.youtube) && (
+                                            <ul class="talk-grid">
+                                                {e.talks.map((tk) =>
+                                                    tk.youtube ? (
+                                                        <li class="talk">
+                                                            <button
+                                                                class="yt"
+                                                                type="button"
+                                                                data-yt={
+                                                                    tk.youtube
+                                                                }
+                                                                aria-label={`${t.playLabel}: ${tk.title}`}
+                                                            >
+                                                                <img
+                                                                    src={`https://i.ytimg.com/vi/${tk.youtube}/mqdefault.jpg`}
+                                                                    alt=""
+                                                                    loading="lazy"
+                                                                    width="320"
+                                                                    height="180"
+                                                                />
+                                                                <span
+                                                                    class="yt-play"
+                                                                    aria-hidden="true"
+                                                                >
+                                                                    ▶
+                                                                </span>
+                                                            </button>
+                                                            <p class="talk-title">
+                                                                {tk.title}
+                                                            </p>
+                                                            {tk.speaker && (
+                                                                <p class="talk-speaker">
+                                                                    {tk.speaker}
+                                                                </p>
+                                                            )}
+                                                        </li>
+                                                    ) : null
+                                                )}
+                                            </ul>
+                                        )}
+                                    {!e.talks.some((tk) => tk.youtube) &&
+                                        e.talks.length > 0 && (
+                                            <ol class="talk-list">
+                                                {e.talks.map((tk) => (
+                                                    <li>
+                                                        {tk.title}
+                                                        {tk.speaker && (
+                                                            <span class="talk-speaker">
+                                                                {' '}
+                                                                — {tk.speaker}
+                                                            </span>
+                                                        )}
+                                                    </li>
+                                                ))}
+                                            </ol>
+                                        )}
+                                    {e.photos.length > 0 && (
+                                        <div class="strip">
+                                            {e.photos.slice(0, 6).map((p) => (
+                                                <img
+                                                    src={p.thumb ?? p.src}
+                                                    alt=""
+                                                    loading="lazy"
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </details>
+                        ))
+                    }
+                </div>
+            </section>
+
+            <!-- gallery -->
+            <section id="gallery" class="sec" data-section="gallery">
+                <header class="help-head">
+                    <h2><span class="num">3.</span> {t.galleryTitle}</h2>
+                    <span class="tag">*vimkr-gallery*</span>
+                </header>
+                <div class="buflist" role="group" aria-label=":ls">
+                    <button type="button" data-filter="all" aria-pressed="true">
+                        <span class="bn">0</span> "{t.galleryAll}" <span
+                            class="cnt">{photos.length}</span
+                        >
+                    </button>
+                    {
+                        galleryFilters.map((e, i) => (
+                            <button
+                                type="button"
+                                data-filter={e.id}
+                                aria-pressed="false"
+                            >
+                                <span class="bn">{i + 1}</span> "{e.name}"{' '}
+                                <span class="cnt">{e.photos.length}</span>
+                            </button>
+                        ))
+                    }
+                </div>
+                <div class="masonry">
+                    {
+                        photos.map((p, i) => (
+                            <a
+                                class="shot"
+                                href={p.src}
+                                data-event={p.event}
+                                data-caption={`${p.name} · ${fmtDate(p.date)}`}
+                            >
+                                <img
+                                    src={p.thumb ?? p.src}
+                                    alt={`${p.name} #${i + 1}`}
+                                    loading="lazy"
+                                />
+                            </a>
+                        ))
+                    }
+                </div>
+            </section>
+
+            <!-- join -->
+            <section id="join" class="sec" data-section="join">
+                <header class="help-head">
+                    <h2><span class="num">4.</span> {t.joinTitle}</h2>
+                    <span class="tag">*vimkr-join*</span>
+                </header>
+                <div class="join">
+                    <p>{t.joinBody}</p>
+                    <a
+                        class="join-btn"
+                        href={DISCORD}
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <span class="prompt">:</span>join discord<span
+                            class="enter">&lt;CR&gt;</span
+                        >
+                        <span class="join-label">{t.joinButton}</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- docs -->
+            <section id="docs" class="sec" data-section="docs">
+                <header class="help-head">
+                    <h2><span class="num">5.</span> {t.docsTitle}</h2>
+                    <span class="tag">*vimkr-docs*</span>
+                </header>
+                <p class="sec-lead">{t.docsBody}</p>
+                <ul class="doc-links">
+                    {
+                        t.docs.map((d) => (
+                            <li>
+                                <a href={d.href}>|{d.title}|</a>
+                            </li>
+                        ))
+                    }
+                    <li>
+                        <a href={GITHUB} target="_blank" rel="noopener"
+                            >|{t.contribute}| ↗</a
+                        >
+                    </li>
+                </ul>
+            </section>
+
+            <!-- help -->
+            <section id="help" class="sec" data-section="help">
+                <header class="help-head">
+                    <h2><span class="num">6.</span> {t.helpTitle}</h2>
+                    <span class="tag">*vimkr-keys*</span>
+                </header>
+                <dl class="keys">
+                    {
+                        t.help.map(([k, v]) => (
+                            <div>
+                                <dt>
+                                    <kbd>{k}</kbd>
+                                </dt>
+                                <dd>{v}</dd>
+                            </div>
+                        ))
+                    }
+                </dl>
+                <p class="tildes" aria-hidden="true">~<br />~<br />~</p>
+            </section>
+        </main>
+
+        <!-- statusline + command line -->
+        <footer class="bottom">
+            <div class="statusline">
+                <span class="mode" id="sl-mode">NORMAL</span>
+                <span class="sl-file">{fileName}</span>
+                <span class="sl-sec" id="sl-sec">top</span>
+                <span class="sl-right">
+                    <span class="sl-hide">utf-8</span>
+                    <span class="sl-hide">[{lang}]</span>
+                    <span id="sl-pct">Top</span>
+                </span>
+            </div>
+            <form class="cmdline" id="cmdline" autocomplete="off">
+                <button type="button" class="cmd-hint" id="cmd-hint"
+                    >{t.hint}</button
+                >
+                <label class="cmd-wrap" hidden>
+                    <span>:</span>
+                    <input
+                        id="cmd-input"
+                        name="cmd"
+                        spellcheck="false"
+                        autocapitalize="off"
+                        aria-label="command"
+                    />
+                </label>
+            </form>
+        </footer>
+
+        <dialog class="lightbox" id="lightbox" aria-label={t.galleryTitle}>
+            <img id="lb-img" alt="" />
+            <p class="lb-cap">
+                <span id="lb-pos"></span>
+                <span id="lb-cap"></span>
+            </p>
+            <button
+                type="button"
+                class="lb-btn lb-prev"
+                data-lb="prev"
+                aria-label={t.lightbox.prev}>h</button
+            >
+            <button
+                type="button"
+                class="lb-btn lb-next"
+                data-lb="next"
+                aria-label={t.lightbox.next}>l</button
+            >
+            <button
+                type="button"
+                class="lb-btn lb-close"
+                data-lb="close"
+                aria-label={t.lightbox.close}>:q</button
+            >
+        </dialog>
+
+        <script>
+            import { initHome } from '../../scripts/home'
+            initHome()
+        </script>
+    </body>
+</html>

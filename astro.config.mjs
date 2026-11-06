@@ -11,12 +11,18 @@ export default defineConfig({
     starlight({
       favicon: '/favicon.ico',
       title: 'vim.kr',
+      defaultLocale: 'root',
+      locales: {
+        root: { label: '한국어', lang: 'ko' },
+        en: { label: 'English' },
+        ja: { label: '日本語' },
+      },
       customCss: [
         './src/styles/global.css',
       ],
       social: {
-        discord: 'https://discord.com/widget?id=1071395189219938354&theme=dark',
-        github: 'https://github.com/vim-kr/renewal',
+        discord: 'https://discord.gg/FCDhM2cw65',
+        github: 'https://github.com/vim-kr/vim-kr.github.io',
       },
       sidebar: [
         {
