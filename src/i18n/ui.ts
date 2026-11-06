@@ -7,7 +7,6 @@ export const langs: { code: Lang; label: string; path: string }[] = [
 ]
 
 export const DISCORD = 'https://discord.gg/FCDhM2cw65'
-export const GITHUB = 'https://github.com/vim-kr/vim-kr.github.io'
 
 // 연습 화면 문구. `x` 처럼 백틱으로 감싼 것은 키캡으로 그린다.
 interface Lesson {
@@ -125,7 +124,6 @@ const ko = {
     joinTitle: '함께해요',
     joinBody: ['질문, 설정 자랑, 행사 소식.', '모두 디스코드에 있어요.'],
     joinButton: '디스코드 참여하기',
-    footerCode: '이 사이트 고치기',
     lightbox: { close: '닫기', prev: '이전', next: '다음' },
     cmd: {
         hint: '를 눌러 보세요. 이 페이지도 Vim처럼 움직여요.',
@@ -259,7 +257,6 @@ const en: Dict = {
         'It all happens on Discord (mostly Korean).',
     ],
     joinButton: 'Join Discord',
-    footerCode: 'Edit this site',
     lightbox: { close: 'Close', prev: 'Previous', next: 'Next' },
     cmd: {
         hint: 'Press it. This page moves like Vim too.',
@@ -391,7 +388,6 @@ const ja: Dict = {
         'すべて Discord で（主に韓国語）。',
     ],
     joinButton: 'Discord に参加',
-    footerCode: 'このサイトを直す',
     lightbox: { close: '閉じる', prev: '前へ', next: '次へ' },
     cmd: {
         hint: 'を押してみて。このページも Vim のように動きます。',

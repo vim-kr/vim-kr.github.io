@@ -1,7 +1,7 @@
 ---
 import Base from './base.astro'
 import { events, featured, type Lang } from '../../data/events'
-import { ui, langs, DISCORD, GITHUB } from '../../i18n/ui'
+import { ui, langs, DISCORD } from '../../i18n/ui'
 
 interface Props {
     lang: Lang
@@ -390,9 +390,6 @@ const pastEvents = events.filter((e) => e.id !== featured.id)
         <footer class="foot">
             <p class="tildes" aria-hidden="true">~<br />~<br />~</p>
             <p class="links">
-                <a href={GITHUB} target="_blank" rel="noopener"
-                    >{t.footerCode} ↗</a
-                >
                 <a href={DISCORD} target="_blank" rel="noopener">Discord ↗</a>
             </p>
         </footer>
