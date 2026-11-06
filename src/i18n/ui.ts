@@ -7,6 +7,7 @@ export const langs: { code: Lang; label: string; path: string }[] = [
 ]
 
 export const DISCORD = 'https://discord.gg/FCDhM2cw65'
+export const EVENTUS = 'https://event-us.kr/vimkr/event'
 export const GITHUB = 'https://github.com/vim-kr/vim-kr.github.io'
 
 // 연습 화면 문구. `x` 처럼 백틱으로 감싼 것은 키캡으로 그린다.
@@ -29,9 +30,8 @@ const ko = {
     discord: '디스코드',
     heroKicker: '한국 Vim 커뮤니티',
     heroTyped: ['Vim,', '처음이어도 괜찮아요'],
-    heroBody: ['아래 화면에서 직접 눌러 보세요.', '5분이면 충분해요.'],
     heroCta: '지금 해 보기',
-    facts: ['초보 질문 환영', '매년 오프라인 모임', '한국어로 대화'],
+    facts: ['매년 오프라인 모임, 신청은 이벤터스에서'],
     pg: {
         label: 'Vim 연습',
         start: '눌러서 시작',
@@ -154,13 +154,8 @@ const en: Dict = {
     discord: 'Discord',
     heroKicker: 'Korean Vim community',
     heroTyped: ['New to Vim?', 'You’re welcome here'],
-    heroBody: ['Try it yourself right below.', 'Five minutes is enough.'],
     heroCta: 'Try it now',
-    facts: [
-        'Beginner questions welcome',
-        'Meetups every year',
-        'Based in Korea',
-    ],
+    facts: ['Meetups every year, sign up on Event-us'],
     pg: {
         label: 'Try Vim',
         start: 'Click to start',
@@ -284,9 +279,8 @@ const ja: Dict = {
     discord: 'Discord',
     heroKicker: '韓国の Vim コミュニティ',
     heroTyped: ['Vim、', 'はじめてでも大丈夫'],
-    heroBody: ['下の画面で実際に押してみましょう。', '5分あれば十分です。'],
     heroCta: '今すぐ試す',
-    facts: ['初心者の質問歓迎', '毎年オフラインで集まる', '韓国で活動中'],
+    facts: ['毎年オフラインで集まり、申し込みは Event-us で'],
     pg: {
         label: 'Vim 練習',
         start: 'クリックして開始',

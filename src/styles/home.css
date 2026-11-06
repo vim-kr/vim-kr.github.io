@@ -301,7 +301,7 @@ main {
 }
 
 .sec {
-    padding: 96px 0 0;
+    padding: 160px 0 0;
 }
 
 .sec-title {
@@ -436,7 +436,7 @@ h1 .ln-row::before {
 }
 
 .hero h1 {
-    margin: 0 0 24px;
+    margin: 0 0 36px;
     font-family: var(--mono);
     font-size: clamp(36px, 6.4vw, 76px);
     font-weight: 800;
@@ -452,16 +452,6 @@ h1 .ln-row::before {
 .hero .cur-bar {
     box-shadow: inset 0.08em 0 0 var(--fg);
     padding-right: 0.08em;
-}
-
-.hero-body {
-    margin: 0 0 28px;
-    font-size: 19px;
-    color: var(--muted);
-}
-
-.hero-body span {
-    display: block;
 }
 
 .hero-actions {
@@ -486,6 +476,10 @@ h1 .ln-row::before {
 
 .facts li::before {
     content: '✓ ';
+}
+
+.facts a {
+    color: inherit;
 }
 
 .hero .win-msg b {
@@ -758,7 +752,7 @@ button.code-chip {
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     gap: 32px;
     align-items: center;
-    margin-top: 96px;
+    margin-top: 160px;
 }
 
 .video-frame {
@@ -1343,7 +1337,6 @@ button.code-chip {
         font-size: 12px;
     }
 
-    .hero-body,
     .lead {
         font-size: 17px;
     }
@@ -1424,6 +1417,10 @@ button.code-chip {
     }
 
     .sec {
-        padding-top: 72px;
+        padding-top: 112px;
+    }
+
+    .latest {
+        margin-top: 112px;
     }
 }

@@ -1,7 +1,7 @@
 ---
 import '../../styles/home.css'
 import { events, featured, type Lang } from '../../data/events'
-import { ui, langs, DISCORD, GITHUB } from '../../i18n/ui'
+import { ui, langs, DISCORD, GITHUB, EVENTUS } from '../../i18n/ui'
 
 interface Props {
     lang: Lang
@@ -147,13 +147,6 @@ const pageData = JSON.stringify({
                                 ))
                             }
                         </h1>
-                        <p class="hero-body">
-                            {
-                                t.heroBody.map((l) => (
-                                    <span class="ln-row">{l}</span>
-                                ))
-                            }
-                        </p>
                         <div class="hero-actions ln-row">
                             <a class="btn btn-rev" href="#try"
                                 >{t.heroCta} <kbd class="kbd-inv">⏎</kbd></a
@@ -161,7 +154,19 @@ const pageData = JSON.stringify({
                             <a class="btn" href="#start">{t.nav.start}</a>
                         </div>
                         <ul class="facts ln-row">
-                            {t.facts.map((f) => <li>{f}</li>)}
+                            {
+                                t.facts.map((f) => (
+                                    <li>
+                                        <a
+                                            href={EVENTUS}
+                                            target="_blank"
+                                            rel="noopener"
+                                        >
+                                            {f} ↗
+                                        </a>
+                                    </li>
+                                ))
+                            }
                         </ul>
                     </div>
                 </div>
