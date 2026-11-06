@@ -1,20 +1,15 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 
-/* Starlight docs: Tokyo Night colors to match the home page */
+/* Starlight docs: Vim 기본 색에 맞춘 강조색 */
 :root {
-    --sl-font: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+    --sl-font: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Apple SD Gothic Neo', system-ui, sans-serif;
     --sl-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    --sl-color-accent-low: #2a3254;
-    --sl-color-accent: #7aa2f7;
-    --sl-color-accent-high: #c0caf5;
-    --sl-color-white: #ffffff;
-    --sl-color-gray-1: #c0caf5;
-    --sl-color-gray-2: #a9b1d6;
-    --sl-color-gray-3: #737aa2;
-    --sl-color-gray-4: #3b4261;
-    --sl-color-gray-5: #292e42;
-    --sl-color-gray-6: #1f2335;
-    --sl-color-black: #1a1b26;
+}
+
+:root[data-theme='light'] {
+    --sl-color-accent-low: #e6e6ff;
+    --sl-color-accent: #0000ff;
+    --sl-color-accent-high: #00008b;
 }
 
 body {

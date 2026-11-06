@@ -1,51 +1,106 @@
-// Vim-style keyboard navigation, command line, gallery lightbox, lazy YouTube.
-interface Config {
+// 페이지 전체: 타이핑 애니메이션, Vim 식 스크롤과 명령줄, 영상, 사진
+interface PageData {
     lang: string
-    hint: string
-    hintTouch: string
-    notCmd: string
-    quit: string
+    cmd: {
+        hint: string
+        touch: string
+        notCmd: string
+        quit: string
+        list: [string, string][]
+    }
     langs: [string, string][]
+    typed: string[]
 }
 
 const SECTIONS: Record<string, string> = {
     top: 'top',
-    about: 'about',
-    home: 'top',
+    try: 'try',
+    tutor: 'try',
+    start: 'start',
+    help: 'start',
     events: 'events',
-    e: 'events',
     gallery: 'gallery',
     photos: 'gallery',
     join: 'join',
     discord: 'join',
-    docs: 'docs',
-    help: 'help',
-    h: 'help',
+}
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
+
+async function typeHero(data: PageData) {
+    const spans = Array.from(
+        document.querySelectorAll<HTMLElement>('.hero .typed')
+    )
+    const pos = document.getElementById('hero-pos')!
+    const msg = document.getElementById('hero-msg')!
+    const cursor = document.createElement('span')
+    cursor.className = 'cur-bar'
+    cursor.textContent = '​'
+    const written = `"hello.txt" ${spans.length}L written`
+    if (reduced) {
+        msg.textContent = written
+        return
+    }
+    spans.forEach((s) => (s.textContent = ''))
+    await sleep(500)
+    for (let r = 0; r < spans.length; r++) {
+        const chars = Array.from(data.typed[r])
+        spans[r].append(cursor)
+        for (let c = 0; c < chars.length; c++) {
+            cursor.before(chars[c])
+            pos.textContent = `${r + 2},${c + 2}`
+            await sleep(chars[c] === ' ' ? 40 : 85 + Math.random() * 70)
+        }
+        await sleep(220)
+    }
+    // Esc 로 노멀 모드, 그리고 :w
+    await sleep(300)
+    msg.textContent = ''
+    cursor.className = 'cur'
+    cursor.textContent = ' '
+    await sleep(500)
+    for (const ch of [':', 'w']) {
+        msg.textContent += ch
+        await sleep(180)
+    }
+    await sleep(260)
+    msg.textContent = written
 }
 
 export function initHome() {
-    const cfg: Config = JSON.parse(document.body.dataset.vim || '{}')
-    const $ = <T extends HTMLElement>(sel: string) =>
-        document.querySelector<T>(sel)!
+    const data: PageData = JSON.parse(document.body.dataset.page || '{}')
+    const $ = <T extends HTMLElement>(s: string) =>
+        document.querySelector<T>(s)!
     const mode = $('#sl-mode')
     const hint = $<HTMLButtonElement>('#cmd-hint')
     const wrap = $('.cmd-wrap')
     const input = $<HTMLInputElement>('#cmd-input')
     const form = $<HTMLFormElement>('#cmdline')
-    const touch = matchMedia('(hover: none)').matches
-    const defaultHint = touch ? cfg.hintTouch : cfg.hint
-    hint.textContent = defaultHint
+    const wild = $('#wildmenu')
+    const hintHTML = hint.innerHTML
+
+    typeHero(data).then(() => {
+        // 명령줄이 있다는 걸 한 번 알려 준다
+        if (!reduced) {
+            hint.classList.add('nudge')
+            setTimeout(() => hint.classList.remove('nudge'), 4000)
+        }
+    })
 
     const setMode = (m: string) => {
         mode.textContent = m
         mode.dataset.mode = m
     }
+    document.addEventListener('vimkr:mode', (e) =>
+        setMode((e as CustomEvent).detail)
+    )
 
     const goto = (id: string) => {
         const el = document.getElementById(id)
         if (!el) return
         if (el instanceof HTMLDetailsElement) el.open = true
-        el.scrollIntoView()
+        el.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' })
         history.replaceState(
             null,
             '',
@@ -53,30 +108,31 @@ export function initHome() {
         )
     }
 
-    // ---------- command line ----------
+    // ---------- 명령줄 ----------
     let msgTimer = 0
-    const message = (text: string, error = false) => {
+    const message = (text: string) => {
         hint.textContent = text
-        hint.classList.toggle('error', error)
+        hint.classList.add('error')
         clearTimeout(msgTimer)
         msgTimer = window.setTimeout(() => {
-            hint.textContent = defaultHint
+            hint.innerHTML = hintHTML
             hint.classList.remove('error')
-        }, 3500)
+        }, 3000)
     }
 
-    const openCmd = (prefill = '') => {
+    const openCmd = () => {
         hint.hidden = true
         wrap.hidden = false
-        input.value = prefill
+        wild.hidden = false
+        input.value = ''
         setMode('COMMAND')
         input.focus()
     }
 
     const closeCmd = () => {
         wrap.hidden = true
+        wild.hidden = true
         hint.hidden = false
-        input.blur()
         setMode('NORMAL')
     }
 
@@ -85,21 +141,33 @@ export function initHome() {
         if (!cmd) return
         const [name, arg] = cmd.split(/\s+/)
         if (SECTIONS[name]) return goto(SECTIONS[name])
-        if (name === 'lang' || (name === 'set' && arg?.startsWith('lang='))) {
-            const code = (arg || '').replace('lang=', '')
-            const target = cfg.langs.find(([c]) => c === code)
+        if (name === 'lang') {
+            const target = data.langs.find(([c]) => c === arg)
             if (target) return void (location.href = target[1] + location.hash)
-            return message(`E474: ${cmd}`, true)
         }
-        if (/^(q|q!|qa|qa!|wq|x|wqa)$/.test(name))
-            return message(cfg.quit, true)
-        if (/^\d+$/.test(name)) return window.scrollTo({ top: 0 })
-        if (name === 'G' || name === '$')
-            return window.scrollTo({ top: document.body.scrollHeight })
-        message(`${cfg.notCmd}: ${cmd}`, true)
+        if (/^(q|q!|qa|qa!|wq|x|wqa)$/.test(name)) return message(data.cmd.quit)
+        message(`${data.cmd.notCmd}: ${cmd}`)
     }
 
-    hint.addEventListener('click', () => openCmd())
+    // 명령 목록 필터 (Vim wildmenu 처럼)
+    const items = Array.from(
+        wild.querySelectorAll<HTMLButtonElement>('[data-cmd]')
+    )
+    input.addEventListener('input', () => {
+        const v = input.value.trim()
+        items.forEach(
+            (b) => (b.parentElement!.hidden = !b.dataset.cmd!.startsWith(v))
+        )
+    })
+    items.forEach((b) => {
+        b.addEventListener('mousedown', (e) => e.preventDefault())
+        b.addEventListener('click', () => {
+            closeCmd()
+            run(b.dataset.cmd!)
+        })
+    })
+
+    hint.addEventListener('click', openCmd)
     form.addEventListener('submit', (e) => {
         e.preventDefault()
         const v = input.value
@@ -108,30 +176,49 @@ export function initHome() {
     })
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeCmd()
+        if (e.key === 'Tab') {
+            e.preventDefault()
+            const first = items.find((b) => !b.parentElement!.hidden)
+            if (first) input.value = first.dataset.cmd!
+        }
     })
     input.addEventListener('blur', () => {
         if (!wrap.hidden) closeCmd()
     })
 
-    // ---------- normal-mode keys ----------
+    // ---------- 노멀 모드 키 ----------
     let lastG = 0
     document.addEventListener('keydown', (e) => {
         if (e.metaKey || e.ctrlKey || e.altKey) return
-        const target = e.target as HTMLElement
-        if (target.closest('input, textarea, select, [contenteditable]')) return
+        if (
+            (e.target as HTMLElement).closest(
+                'input, textarea, select, [contenteditable]'
+            )
+        )
+            return
         if (lightbox.open) return
-        const step = 90
-        const key = e.code === 'Semicolon' && e.shiftKey ? ':' : e.key
+        const key =
+            e.code === 'Semicolon' && e.shiftKey
+                ? ':'
+                : e.code === 'KeyJ'
+                  ? 'j'
+                  : e.code === 'KeyK'
+                    ? 'k'
+                    : e.code === 'KeyG'
+                      ? e.shiftKey
+                          ? 'G'
+                          : 'g'
+                      : e.key
         switch (key) {
             case 'j':
                 window.scrollBy({
-                    top: step,
+                    top: 90,
                     behavior: 'instant' as ScrollBehavior,
                 })
                 break
             case 'k':
                 window.scrollBy({
-                    top: -step,
+                    top: -90,
                     behavior: 'instant' as ScrollBehavior,
                 })
                 break
@@ -146,37 +233,28 @@ export function initHome() {
                 e.preventDefault()
                 openCmd()
                 break
-            case '?':
-                goto('help')
-                break
-            default:
-                return
         }
     })
 
-    // ---------- statusline: section + scroll percent ----------
-    const sec = $('#sl-sec')
+    // ---------- 상태줄: 스크롤 위치, 현재 탭 ----------
     const pct = $('#sl-pct')
     const tabs = document.querySelectorAll<HTMLAnchorElement>('.tab')
     const updatePct = () => {
         const max = document.documentElement.scrollHeight - innerHeight
-        const y = scrollY
         pct.textContent =
-            y <= 4
+            scrollY <= 4
                 ? 'Top'
-                : y >= max - 4
+                : scrollY >= max - 4
                   ? 'Bot'
-                  : `${Math.round((y / max) * 100)}%`
+                  : `${Math.round((scrollY / max) * 100)}%`
     }
     addEventListener('scroll', updatePct, { passive: true })
     updatePct()
-
     const observer = new IntersectionObserver(
         (entries) => {
             for (const en of entries) {
                 if (!en.isIntersecting) continue
-                const name = (en.target as HTMLElement).dataset.section || 'top'
-                sec.textContent = `*vimkr-${en.target.id}*`
+                const name = (en.target as HTMLElement).dataset.section
                 tabs.forEach((t) =>
                     t.classList.toggle('active', t.dataset.tab === name)
                 )
@@ -188,21 +266,35 @@ export function initHome() {
         .querySelectorAll('[data-section]')
         .forEach((s) => observer.observe(s))
 
-    // ---------- lazy YouTube ----------
-    document.querySelectorAll<HTMLButtonElement>('.yt').forEach((btn) => {
+    // ---------- 복사 버튼 ----------
+    document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) =>
+        b.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(b.dataset.copy!)
+                const label = b.querySelector('.copy-label')!
+                const old = label.textContent
+                label.textContent = b.dataset.done!
+                setTimeout(() => (label.textContent = old), 1500)
+            } catch {
+                /* 복사가 막힌 브라우저는 그냥 둔다 */
+            }
+        })
+    )
+
+    // ---------- 영상: 누르면 그때 불러온다 ----------
+    document.querySelectorAll<HTMLButtonElement>('.yt').forEach((btn) =>
         btn.addEventListener('click', () => {
-            const id = btn.dataset.yt
             const frame = document.createElement('iframe')
-            frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`
+            frame.src = `https://www.youtube-nocookie.com/embed/${btn.dataset.yt}?autoplay=1&rel=0`
             frame.title = btn.getAttribute('aria-label') || 'YouTube'
             frame.allow =
                 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
             frame.allowFullscreen = true
             btn.replaceWith(frame)
         })
-    })
+    )
 
-    // ---------- gallery filter ----------
+    // ---------- 사진 필터 ----------
     const shots = Array.from(
         document.querySelectorAll<HTMLAnchorElement>('.shot')
     )
@@ -225,11 +317,9 @@ export function initHome() {
             )
         )
 
-    // ---------- lightbox ----------
+    // ---------- 사진 크게 보기 ----------
     const lightbox = $<HTMLDialogElement>('#lightbox')
     const lbImg = $<HTMLImageElement>('#lb-img')
-    const lbPos = $('#lb-pos')
-    const lbCap = $('#lb-cap')
     let idx = 0
     const visible = () => shots.filter((s) => !s.hidden)
     const show = (i: number) => {
@@ -238,8 +328,8 @@ export function initHome() {
         const s = list[idx]
         lbImg.src = s.href
         lbImg.alt = s.querySelector('img')?.alt || ''
-        lbPos.textContent = `[${idx + 1}/${list.length}]`
-        lbCap.textContent = s.dataset.caption || ''
+        $('#lb-pos').textContent = `[${idx + 1}/${list.length}]`
+        $('#lb-cap').textContent = s.dataset.caption || ''
     }
     shots.forEach((s) =>
         s.addEventListener('click', (e) => {

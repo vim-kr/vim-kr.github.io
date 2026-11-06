@@ -11,39 +11,35 @@ const { lang } = Astro.props
 const t = ui[lang]
 const site = 'https://vim.kr'
 const current = langs.find((l) => l.code === lang)!
-const fileName = `README.${lang}.md`
 
 const fmtDate = (d: string) =>
     new Intl.DateTimeFormat(
         lang === 'ko' ? 'ko-KR' : lang === 'ja' ? 'ja-JP' : 'en-US',
         {
             year: 'numeric',
-            month: 'short',
+            month: 'long',
             day: 'numeric',
         }
     ).format(new Date(d + 'T00:00:00'))
+
+// `x` 를 키캡으로 바꾼다
+const keycaps = (s: string) =>
+    s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/`([^`]+)`/g, '<kbd>$1</kbd>')
+        .replace(/\n/g, '<br />')
 
 const photos = events.flatMap((e) =>
     e.photos.map((p) => ({ ...p, event: e.id, name: e.name, date: e.date }))
 )
 const galleryFilters = events.filter((e) => e.photos.length > 0)
-
-const usedFor = [
-    { ft: 'web', logos: ['react', 'astro', 'svelte', 'django', 'rails'] },
-    { ft: 'mobile', logos: ['flutter', 'react'] },
-    { ft: 'notes', logos: ['obsidian'] },
-    { ft: 'research', logos: ['jupyter', 'latex'] },
-    { ft: 'tui', logos: ['git', 'github', 'openai'] },
-]
-
-const heroLines = 9
-const script = JSON.stringify({
+const pastEvents = events.filter((e) => e.id !== featured.id)
+const pageData = JSON.stringify({
     lang,
-    hint: t.hint,
-    hintTouch: t.hintTouch,
-    notCmd: t.notCmd,
-    quit: t.quit,
+    cmd: t.cmd,
     langs: langs.map((l) => [l.code, l.path]),
+    typed: t.heroTyped,
 })
 ---
 
@@ -54,7 +50,7 @@ const script = JSON.stringify({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{t.metaTitle}</title>
         <meta name="description" content={t.metaDesc} />
-        <meta name="theme-color" content="#1a1b26" />
+        <meta name="theme-color" content="#ffffff" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="canonical" href={site + current.path} />
         {
@@ -75,7 +71,7 @@ const script = JSON.stringify({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap"
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Nanum+Gothic+Coding:wght@400;700&display=swap"
         />
         <link
             rel="stylesheet"
@@ -94,214 +90,330 @@ const script = JSON.stringify({
             gtag('config', 'G-Y2Y08PZHV2')
         </script>
     </head>
-    <body data-vim={script}>
-        <a class="skip" href="#main">Skip to content</a>
-
-        <!-- tabline -->
-        <nav class="tabline" aria-label="Sections">
+    <body data-page={pageData}>
+        <!-- tabline: Vim 기본 TabLine 모양 -->
+        <nav class="tabline" aria-label="Menu">
             <a class="brand" href={current.path}>
-                <img src="/vimkr.png" alt="" width="20" height="20" />
-                <span>vim.kr</span>
+                <img src="/vimkr.png" alt="" width="22" height="22" />
+                vim.kr
             </a>
             <div class="tabs">
                 {
-                    (
-                        ['home', 'events', 'gallery', 'join', 'docs'] as const
-                    ).map((k, i) => (
-                        <a
-                            class="tab"
-                            href={`#${k === 'home' ? 'top' : k}`}
-                            data-tab={k === 'home' ? 'top' : k}
-                        >
-                            <span class="tab-n">{i + 1}</span>
-                            {t.tabs[k]}
-                        </a>
-                    ))
+                    (['start', 'events', 'gallery', 'join'] as const).map(
+                        (k) => (
+                            <a class="tab" href={`#${k}`} data-tab={k}>
+                                {t.nav[k]}
+                            </a>
+                        )
+                    )
                 }
             </div>
-            <div class="langs" aria-label="Language">
-                {
-                    langs.map((l) => (
-                        <a
-                            href={l.path}
-                            hreflang={l.code}
-                            lang={l.code}
-                            aria-current={l.code === lang ? 'true' : undefined}
-                        >
-                            {l.code}
-                        </a>
-                    ))
-                }
+            <div class="tab-right">
+                <div class="langs">
+                    {
+                        langs.map((l) => (
+                            <a
+                                href={l.path}
+                                hreflang={l.code}
+                                lang={l.code}
+                                aria-current={
+                                    l.code === lang ? 'true' : undefined
+                                }
+                            >
+                                {l.code}
+                            </a>
+                        ))
+                    }
+                </div>
+                <a
+                    class="btn btn-rev btn-sm"
+                    href={DISCORD}
+                    target="_blank"
+                    rel="noopener">{t.discord}</a
+                >
             </div>
         </nav>
 
         <main id="main">
-            <!-- hero: vertical split, intro buffer + latest video -->
-            <section id="top" class="hero" data-section="top">
-                <div class="buffer intro">
-                    <ol class="gutter" aria-hidden="true">
-                        {
-                            Array.from({ length: heroLines }, (_, i) => (
-                                <li>{i + 1}</li>
-                            ))
-                        }
-                    </ol>
-                    <div class="intro-body">
-                        <p class="kicker">{t.heroKicker}</p>
-                        <h1>
-                            {t.heroTitle}<span class="cursor" aria-hidden="true"
-                            ></span>
-                        </h1>
-                        <p class="lead">{t.heroBody}</p>
-                        <ul class="cmds">
+            <!-- hero: 입력 모드에서 제목을 타이핑하는 창 -->
+            <section class="hero win" data-section="top" id="top">
+                <div class="win-body">
+                    <div class="hero-text">
+                        <p class="c-comment ln-row">" {t.heroKicker}</p>
+                        <h1 aria-label={t.heroTyped.join(' ')}>
                             {
-                                t.heroCmds.map((c) => (
-                                    <li>
-                                        <a href={c.href}>
-                                            <span class="type">type</span>
-                                            <code>
-                                                {c.cmd}
-                                                <span class="enter">
-                                                    &lt;Enter&gt;
-                                                </span>
-                                            </code>
-                                            <span class="desc">{c.desc}</span>
-                                        </a>
-                                    </li>
+                                t.heroTyped.map((line) => (
+                                    <span class="typed ln-row" data-text={line}>
+                                        {line}
+                                    </span>
                                 ))
                             }
+                        </h1>
+                        <p class="hero-body">
+                            {
+                                t.heroBody.map((l) => (
+                                    <span class="ln-row">{l}</span>
+                                ))
+                            }
+                        </p>
+                        <div class="hero-actions ln-row">
+                            <a class="btn btn-rev" href="#try"
+                                >{t.heroCta} <kbd class="kbd-inv">⏎</kbd></a
+                            >
+                            <a class="btn" href="#start">{t.nav.start}</a>
+                        </div>
+                        <ul class="facts ln-row">
+                            {t.facts.map((f) => <li>{f}</li>)}
                         </ul>
                     </div>
                 </div>
+                <div class="win-status">
+                    <span>hello.txt</span>
+                    <span class="win-pos" id="hero-pos">1,1</span>
+                </div>
+                <div class="win-msg" id="hero-msg"><b>-- INSERT --</b></div>
+            </section>
 
-                <div class="buffer video-win">
-                    <div class="win-bar">
-                        <span class="dot"></span>
-                        <span class="win-title"
-                            >{
-                                featured.name.toLowerCase().replace(/\s+/g, '-')
-                            }.mp4</span
-                        >
-                        <span class="win-meta">{fmtDate(featured.date)}</span>
-                    </div>
-                    <div class="video-frame">
-                        <iframe
-                            src={`https://www.youtube-nocookie.com/embed/${featured.video}?rel=0`}
-                            title={featured.talks[0].title}
-                            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen></iframe>
-                    </div>
-                    <div class="video-caption">
-                        <p class="eyebrow">{t.latest}</p>
-                        <h2>{featured.talks[0].title}</h2>
-                        <p>{featured.summary[lang]}</p>
-                        <div class="links">
+            <!-- 연습 화면 -->
+            <section class="win pg" id="try" data-section="top">
+                <div class="pg-grid">
+                    <div class="pg-side">
+                        <p class="pg-label c-comment">" {t.pg.label}</p>
+                        <ol class="pg-steps">
                             {
-                                featured.links.map((l) => (
-                                    <a
-                                        href={l.href}
-                                        target="_blank"
-                                        rel="noopener"
-                                    >
-                                        {l.label[lang]} ↗
-                                    </a>
+                                t.pg.lessons.map((l, i) => (
+                                    <li data-step={i}>
+                                        <button type="button" data-goto={i}>
+                                            {l.title}
+                                        </button>
+                                    </li>
                                 ))
                             }
+                        </ol>
+                        {
+                            t.pg.lessons.map((l, i) => (
+                                <div
+                                    class="pg-lesson"
+                                    data-lesson={i}
+                                    hidden={i !== 0}
+                                >
+                                    <h2>
+                                        <span class="c-statement">
+                                            {i + 1}.
+                                        </span>{' '}
+                                        {l.title}
+                                    </h2>
+                                    <p set:html={keycaps(l.body)} />
+                                    <p class="pg-success" data-success hidden>
+                                        ✓ {l.success}
+                                    </p>
+                                </div>
+                            ))
+                        }
+                        <div
+                            class="pg-lesson pg-done"
+                            data-lesson="done"
+                            hidden
+                        >
+                            <h2 class="c-title">{t.pg.doneTitle}</h2>
+                            <p>
+                                {
+                                    t.pg.doneBody.map((l) => (
+                                        <span class="line">{l}</span>
+                                    ))
+                                }
+                            </p>
+                            <p><code class="code-chip">$ vimtutor</code></p>
                         </div>
+                        <div class="pg-nav">
+                            <button
+                                type="button"
+                                class="btn btn-sm"
+                                data-act="prev">{t.pg.prev}</button
+                            >
+                            <button
+                                type="button"
+                                class="btn btn-sm"
+                                data-act="reset">{t.pg.reset}</button
+                            >
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-rev"
+                                data-act="next">{t.pg.next}</button
+                            >
+                        </div>
+                    </div>
+                    <div class="pg-editor">
+                        <div class="pg-buf" aria-hidden="true"></div>
+                        <div class="win-status">
+                            <span>practice.txt</span>
+                            <span class="win-pos" data-pos>1,1</span>
+                        </div>
+                        <div class="win-msg" data-msg></div>
+                        <textarea
+                            class="pg-input"
+                            aria-label={t.pg.label}
+                            autocapitalize="off"
+                            autocomplete="off"
+                            spellcheck="false"></textarea>
+                        <button type="button" class="pg-start">
+                            <span class="pg-start-main">{t.pg.start}</span>
+                            <span class="pg-start-sub">{t.pg.startSub}</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="pg-keys">
+                    <div class="pg-pad" role="group" aria-label="keys">
+                        {
+                            [
+                                'Esc',
+                                'h',
+                                'j',
+                                'k',
+                                'l',
+                                'x',
+                                'i',
+                                'd',
+                                'u',
+                                ':',
+                                'w',
+                                'q',
+                                '⏎',
+                            ].map((k) => (
+                                <button
+                                    type="button"
+                                    data-key={
+                                        k === '⏎'
+                                            ? 'Enter'
+                                            : k === 'Esc'
+                                              ? 'Escape'
+                                              : k
+                                    }
+                                >
+                                    {k}
+                                </button>
+                            ))
+                        }
+                    </div>
+                    <div class="pg-echo">
+                        <span class="c-comment">{t.pg.pressed}</span>
+                        <span data-echo></span>
                     </div>
                 </div>
             </section>
 
-            <!-- about: help-file style -->
-            <section id="about" class="sec" data-section="top">
-                <header class="help-head">
-                    <h2><span class="num">1.</span> {t.aboutTitle}</h2>
-                    <span class="tag">*vimkr-about*</span>
-                </header>
-                <div class="about-grid">
-                    {
-                        t.about.map((a) => (
-                            <article class="help-entry">
-                                <span class="tag">*{a.tag}*</span>
-                                <h3>{a.title}</h3>
-                                <p>{a.body}</p>
-                            </article>
-                        ))
-                    }
+            <!-- 최근 행사 영상 -->
+            <section class="latest" data-section="events">
+                <div class="video-frame">
+                    <iframe
+                        src={`https://www.youtube-nocookie.com/embed/${featured.video}?rel=0`}
+                        title={featured.talks[0].title}
+                        loading="lazy"
+                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen></iframe>
                 </div>
-                <div class="filetypes">
-                    <p class="comment">" {t.usedFor}</p>
-                    <ul>
+                <div class="latest-text">
+                    <p class="kicker">
+                        <mark>{t.latestKicker}</mark>
+                        {fmtDate(featured.date)}
+                    </p>
+                    <h2>{featured.talks[0].title}</h2>
+                    <p>{featured.summary[lang]}</p>
+                    <p class="links">
                         {
-                            usedFor.map((u) => (
-                                <li>
-                                    <code>
-                                        <span class="kw">set</span> filetype=
-                                        <span class="str">{u.ft}</span>
-                                    </code>
-                                    <span class="logos">
-                                        {u.logos.map((l) => (
-                                            <img
-                                                src={`/${l}-logo.png`}
-                                                alt={l}
-                                                title={l}
-                                                loading="lazy"
-                                            />
-                                        ))}
-                                    </span>
-                                </li>
+                            featured.links.map((l) => (
+                                <a href={l.href} target="_blank" rel="noopener">
+                                    {l.label[lang]} ↗
+                                </a>
                             ))
                         }
-                    </ul>
+                    </p>
                 </div>
             </section>
 
-            <!-- events: folds -->
-            <section id="events" class="sec" data-section="events">
-                <header class="help-head">
-                    <h2><span class="num">2.</span> {t.eventsTitle}</h2>
-                    <span class="tag">*vimkr-events*</span>
-                </header>
-                <p class="sec-lead">{t.eventsLead}</p>
-                <div class="folds">
+            <!-- 처음이라면 -->
+            <section class="sec" id="start" data-section="start">
+                <h2 class="sec-title">
+                    <span class="c-linenr">#</span>
+                    {t.startTitle}
+                </h2>
+                <ol class="steps">
                     {
-                        events.map((e, i) => (
-                            <details class="fold" id={e.id} open={i < 2}>
+                        t.steps.map((s, i) => (
+                            <li class="step">
+                                <kbd class="step-n">{i + 1}</kbd>
+                                <h3>{s.title}</h3>
+                                <p set:html={keycaps(s.body)} />
+                                {s.code && (
+                                    <button
+                                        type="button"
+                                        class="code-chip copy"
+                                        data-copy={s.code}
+                                        data-done={t.copied}
+                                    >
+                                        $ {s.code}{' '}
+                                        <span class="copy-label">{t.copy}</span>
+                                    </button>
+                                )}
+                                {s.link && (
+                                    <a
+                                        href={s.link.href}
+                                        target={
+                                            s.link.href.startsWith('http')
+                                                ? '_blank'
+                                                : undefined
+                                        }
+                                        rel="noopener"
+                                    >
+                                        {s.link.label} →
+                                    </a>
+                                )}
+                            </li>
+                        ))
+                    }
+                </ol>
+            </section>
+
+            <!-- 행사 -->
+            <section class="sec" id="events" data-section="events">
+                <h2 class="sec-title">
+                    <span class="c-linenr">#</span>
+                    {t.eventsTitle}
+                </h2>
+                <p class="lead">
+                    {t.eventsLead.map((l) => <span class="line">{l}</span>)}
+                </p>
+                <div class="event-list">
+                    {
+                        pastEvents.map((e, i) => (
+                            <details class="event" id={e.id} open={i === 0}>
                                 <summary>
-                                    <span
-                                        class="fold-mark"
-                                        aria-hidden="true"
-                                    />
-                                    <span class="fold-name">{e.name}</span>
-                                    <span
-                                        class="fold-fill"
-                                        aria-hidden="true"
-                                    />
-                                    <span class="fold-meta">
-                                        <time datetime={e.date}>
-                                            {fmtDate(e.date)}
-                                        </time>
-                                        {e.talks.length > 1 && (
+                                    <span class="ev-year">
+                                        {e.date.slice(0, 4)}
+                                    </span>
+                                    <span class="ev-name">{e.name}</span>
+                                    <span class="ev-meta">
+                                        {e.talks.length > 0 && (
                                             <span>
-                                                · {e.talks.length}
-                                                {t.talksUnit}
+                                                {t.talks(e.talks.length)}
                                             </span>
                                         )}
                                         {e.photos.length > 0 && (
                                             <span>
-                                                · {e.photos.length}
-                                                {t.photosUnit}
+                                                {t.photos(e.photos.length)}
                                             </span>
                                         )}
                                     </span>
+                                    <span
+                                        class="ev-toggle"
+                                        aria-hidden="true"
+                                    />
                                 </summary>
-                                <div class="fold-body">
-                                    <p class="summary">{e.summary[lang]}</p>
-                                    {e.venue && (
-                                        <p class="venue">@ {e.venue[lang]}</p>
-                                    )}
-                                    <div class="links">
+                                <div class="ev-body">
+                                    <p class="ev-date">{fmtDate(e.date)}</p>
+                                    <p class="ev-summary">{e.summary[lang]}</p>
+                                    <p class="links">
                                         {e.links.map((l) => (
                                             <a
                                                 href={l.href}
@@ -319,74 +431,50 @@ const script = JSON.stringify({
                                                 {t.seePhotos} →
                                             </a>
                                         )}
-                                    </div>
-                                    {e.id !== featured.id &&
-                                        e.talks.some((tk) => tk.youtube) && (
-                                            <ul class="talk-grid">
-                                                {e.talks.map((tk) =>
-                                                    tk.youtube ? (
-                                                        <li class="talk">
-                                                            <button
-                                                                class="yt"
-                                                                type="button"
-                                                                data-yt={
-                                                                    tk.youtube
-                                                                }
-                                                                aria-label={`${t.playLabel}: ${tk.title}`}
-                                                            >
-                                                                <img
-                                                                    src={`https://i.ytimg.com/vi/${tk.youtube}/mqdefault.jpg`}
-                                                                    alt=""
-                                                                    loading="lazy"
-                                                                    width="320"
-                                                                    height="180"
-                                                                />
-                                                                <span
-                                                                    class="yt-play"
-                                                                    aria-hidden="true"
-                                                                >
-                                                                    ▶
-                                                                </span>
-                                                            </button>
-                                                            <p class="talk-title">
-                                                                {tk.title}
-                                                            </p>
-                                                            {tk.speaker && (
-                                                                <p class="talk-speaker">
-                                                                    {tk.speaker}
-                                                                </p>
-                                                            )}
-                                                        </li>
-                                                    ) : null
-                                                )}
-                                            </ul>
-                                        )}
-                                    {!e.talks.some((tk) => tk.youtube) &&
+                                    </p>
+                                    {e.talks.some((tk) => tk.youtube) ? (
+                                        <ul class="talk-grid">
+                                            {e.talks.map((tk) => (
+                                                <li class="talk">
+                                                    <button
+                                                        class="yt"
+                                                        type="button"
+                                                        data-yt={tk.youtube}
+                                                        aria-label={`${t.play}: ${tk.title}`}
+                                                    >
+                                                        <img
+                                                            src={`https://i.ytimg.com/vi/${tk.youtube}/mqdefault.jpg`}
+                                                            alt=""
+                                                            loading="lazy"
+                                                            width="320"
+                                                            height="180"
+                                                        />
+                                                        <span
+                                                            class="yt-play"
+                                                            aria-hidden="true"
+                                                        >
+                                                            ▶
+                                                        </span>
+                                                    </button>
+                                                    <p class="talk-title">
+                                                        {tk.title}
+                                                    </p>
+                                                    {tk.speaker && (
+                                                        <p class="talk-speaker">
+                                                            {tk.speaker}
+                                                        </p>
+                                                    )}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    ) : (
                                         e.talks.length > 0 && (
                                             <ol class="talk-list">
                                                 {e.talks.map((tk) => (
-                                                    <li>
-                                                        {tk.title}
-                                                        {tk.speaker && (
-                                                            <span class="talk-speaker">
-                                                                {' '}
-                                                                — {tk.speaker}
-                                                            </span>
-                                                        )}
-                                                    </li>
+                                                    <li>{tk.title}</li>
                                                 ))}
                                             </ol>
-                                        )}
-                                    {e.photos.length > 0 && (
-                                        <div class="strip">
-                                            {e.photos.slice(0, 6).map((p) => (
-                                                <img
-                                                    src={p.thumb ?? p.src}
-                                                    alt=""
-                                                    loading="lazy"
-                                                />
-                                            ))}
-                                        </div>
+                                        )
                                     )}
                                 </div>
                             </details>
@@ -395,27 +483,24 @@ const script = JSON.stringify({
                 </div>
             </section>
 
-            <!-- gallery -->
-            <section id="gallery" class="sec" data-section="gallery">
-                <header class="help-head">
-                    <h2><span class="num">3.</span> {t.galleryTitle}</h2>
-                    <span class="tag">*vimkr-gallery*</span>
-                </header>
-                <div class="buflist" role="group" aria-label=":ls">
-                    <button type="button" data-filter="all" aria-pressed="true">
-                        <span class="bn">0</span> "{t.galleryAll}" <span
-                            class="cnt">{photos.length}</span
-                        >
-                    </button>
+            <!-- 사진 -->
+            <section class="sec" id="gallery" data-section="gallery">
+                <h2 class="sec-title">
+                    <span class="c-linenr">#</span>
+                    {t.galleryTitle}
+                </h2>
+                <div class="filters" role="group">
+                    <button type="button" data-filter="all" aria-pressed="true"
+                        >{t.galleryAll} <span>{photos.length}</span></button
+                    >
                     {
-                        galleryFilters.map((e, i) => (
+                        galleryFilters.map((e) => (
                             <button
                                 type="button"
                                 data-filter={e.id}
                                 aria-pressed="false"
                             >
-                                <span class="bn">{i + 1}</span> "{e.name}"{' '}
-                                <span class="cnt">{e.photos.length}</span>
+                                {e.name} <span>{e.photos.length}</span>
                             </button>
                         ))
                     }
@@ -427,7 +512,7 @@ const script = JSON.stringify({
                                 class="shot"
                                 href={p.src}
                                 data-event={p.event}
-                                data-caption={`${p.name} · ${fmtDate(p.date)}`}
+                                data-caption={`${p.name}, ${fmtDate(p.date)}`}
                             >
                                 <img
                                     src={p.thumb ?? p.src}
@@ -440,101 +525,77 @@ const script = JSON.stringify({
                 </div>
             </section>
 
-            <!-- join -->
-            <section id="join" class="sec" data-section="join">
-                <header class="help-head">
-                    <h2><span class="num">4.</span> {t.joinTitle}</h2>
-                    <span class="tag">*vimkr-join*</span>
-                </header>
-                <div class="join">
-                    <p>{t.joinBody}</p>
-                    <a
-                        class="join-btn"
-                        href={DISCORD}
-                        target="_blank"
-                        rel="noopener"
-                    >
-                        <span class="prompt">:</span>join discord<span
-                            class="enter">&lt;CR&gt;</span
-                        >
-                        <span class="join-label">{t.joinButton}</span>
-                    </a>
-                </div>
+            <!-- 함께하기 -->
+            <section class="sec join" id="join" data-section="join">
+                <h2 class="sec-title">
+                    <span class="c-linenr">#</span>
+                    {t.joinTitle}
+                </h2>
+                <p class="lead">
+                    {t.joinBody.map((l) => <span class="line">{l}</span>)}
+                </p>
+                <a
+                    class="btn btn-rev btn-lg"
+                    href={DISCORD}
+                    target="_blank"
+                    rel="noopener"
+                    >{t.joinButton} <kbd class="kbd-inv">⏎</kbd></a
+                >
             </section>
 
-            <!-- docs -->
-            <section id="docs" class="sec" data-section="docs">
-                <header class="help-head">
-                    <h2><span class="num">5.</span> {t.docsTitle}</h2>
-                    <span class="tag">*vimkr-docs*</span>
-                </header>
-                <p class="sec-lead">{t.docsBody}</p>
-                <ul class="doc-links">
-                    {
-                        t.docs.map((d) => (
-                            <li>
-                                <a href={d.href}>|{d.title}|</a>
-                            </li>
-                        ))
-                    }
-                    <li>
-                        <a href={GITHUB} target="_blank" rel="noopener"
-                            >|{t.contribute}| ↗</a
-                        >
-                    </li>
-                </ul>
-            </section>
-
-            <!-- help -->
-            <section id="help" class="sec" data-section="help">
-                <header class="help-head">
-                    <h2><span class="num">6.</span> {t.helpTitle}</h2>
-                    <span class="tag">*vimkr-keys*</span>
-                </header>
-                <dl class="keys">
-                    {
-                        t.help.map(([k, v]) => (
-                            <div>
-                                <dt>
-                                    <kbd>{k}</kbd>
-                                </dt>
-                                <dd>{v}</dd>
-                            </div>
-                        ))
-                    }
-                </dl>
+            <footer class="foot">
                 <p class="tildes" aria-hidden="true">~<br />~<br />~</p>
-            </section>
+                <p class="links">
+                    <a href="/vim-as-ide/kickstart/">{t.footerDocs}</a>
+                    <a href={GITHUB} target="_blank" rel="noopener"
+                        >{t.footerCode} ↗</a
+                    >
+                    <a href={DISCORD} target="_blank" rel="noopener"
+                        >Discord ↗</a
+                    >
+                </p>
+            </footer>
         </main>
 
-        <!-- statusline + command line -->
-        <footer class="bottom">
+        <!-- 페이지 상태줄과 명령줄 -->
+        <div class="bottom">
+            <ul class="wildmenu" id="wildmenu" hidden>
+                {
+                    t.cmd.list.map(([c, d]) => (
+                        <li>
+                            <button type="button" data-cmd={c}>
+                                <b>:{c}</b> <span>{d}</span>
+                            </button>
+                        </li>
+                    ))
+                }
+            </ul>
             <div class="statusline">
                 <span class="mode" id="sl-mode">NORMAL</span>
-                <span class="sl-file">{fileName}</span>
-                <span class="sl-sec" id="sl-sec">top</span>
-                <span class="sl-right">
-                    <span class="sl-hide">utf-8</span>
-                    <span class="sl-hide">[{lang}]</span>
-                    <span id="sl-pct">Top</span>
-                </span>
+                <span class="sl-file">vim.kr/{lang}</span>
+                <span class="sl-right"
+                    ><span class="sl-keys">{t.cmd.keys}</span><span id="sl-pct"
+                        >Top</span
+                    ></span
+                >
             </div>
             <form class="cmdline" id="cmdline" autocomplete="off">
-                <button type="button" class="cmd-hint" id="cmd-hint"
-                    >{t.hint}</button
-                >
+                <button type="button" class="cmd-hint" id="cmd-hint">
+                    <kbd>:</kbd>
+                    <span class="hint-key">{t.cmd.hint}</span>
+                    <span class="hint-touch">{t.cmd.touch}</span>
+                </button>
                 <label class="cmd-wrap" hidden>
                     <span>:</span>
                     <input
                         id="cmd-input"
-                        name="cmd"
                         spellcheck="false"
                         autocapitalize="off"
                         aria-label="command"
                     />
                 </label>
             </form>
-        </footer>
+        </div>
 
         <dialog class="lightbox" id="lightbox" aria-label={t.galleryTitle}>
             <img id="lb-img" alt="" />
@@ -564,7 +625,9 @@ const script = JSON.stringify({
 
         <script>
             import { initHome } from '../../scripts/home'
+            import { initPlayground } from '../../scripts/playground'
             initHome()
+            initPlayground()
         </script>
     </body>
 </html>
